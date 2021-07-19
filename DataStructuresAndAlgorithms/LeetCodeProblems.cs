@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace DataStructuresAndAlgorithms
 {
@@ -1501,6 +1502,55 @@ namespace DataStructuresAndAlgorithms
                 }
             }
             return sb.ToString().Trim();
+        }
+
+        public int NumDifferentIntegers(string word)
+        {
+            HashSet<string> set = new HashSet<string>();
+            string[] tokens = Regex.Replace(word, @"[a-z]+", " ").Split(' ');            
+            for (int i = 0; i < tokens.Length; i++)
+            {
+                if (string.IsNullOrEmpty(tokens[i])) continue;
+                if (!set.Contains(tokens[i].TrimStart('0'))) set.Add(tokens[i].TrimStart('0'));
+                
+            }
+            return set.Count();
+        }
+
+        public int LengthOfLastWord(string s)
+        {
+            if (string.IsNullOrEmpty(s)) return 0;
+            string[] tokens = s.Trim().Split(' ');
+            int n = tokens.Length;
+            return tokens[n - 1].Length;
+        }
+
+        public IList<int> PartitionLabels(string s) //ababcbacadefegdehijhklij
+        {
+            Dictionary<char, int> dic = new Dictionary<char, int>();
+            int i = 0;
+            while (i < s.Length)
+            {
+                if (!dic.ContainsKey(s[i]))
+                    dic.Add(s[i], i);
+                else dic[s[i]] = i;
+                i++;
+            }
+            i = 0;
+            List<int> result = new List<int>();
+            int end = 0, temp = 0;
+            while (i < s.Length)
+            {
+                end = Math.Max(end, dic[s[i]]);
+                if (i == end)
+                {
+                    result.Add(i - temp + 1);
+                    temp = i + 1;
+                }
+
+                i++;
+            }
+            return result;
         }
 
         public bool CanFinishCourse(int numCourses, int[][] prerequisites)

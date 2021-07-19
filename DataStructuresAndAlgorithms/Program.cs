@@ -121,7 +121,7 @@ namespace DataStructuresAndAlgorithms
             //int output = leetCodeProblems.MaxAreaContainerWithMostWater(new int[] { 1, 8, 6, 2, 5, 4, 8, 3, 7 });
             //string output = leetCodeProblems.IntToRoman(2859);
             //IList<IList<int>> output = leetCodeProblems.ThreeSum(new int[] { -1, 0, 1, 2, -1, -4 });
-            IList<string> output = leetCodeProblems.LetterCombinations("3");
+            //IList<string> output = leetCodeProblems.LetterCombinations("3");
             //int n = 3;
             //char[] str = new char[2 * n];
             //List<string> output= leetCodeProblems.printParenthesis(str, n);
@@ -159,6 +159,9 @@ namespace DataStructuresAndAlgorithms
             //ctx.RightSideOfBT(root);
 
             //leetCodeProblems.SortSentence("is2 sentence4 This1 a3");
+            //leetCodeProblems.NumDifferentIntegers("a123bc34d8ef34");
+            //leetCodeProblems.LengthOfLastWord("a ");
+            leetCodeProblems.PartitionLabels("ababcbacadefegdehijhklij");
 
             #endregion
 
