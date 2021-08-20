@@ -778,10 +778,16 @@ namespace DataStructuresAndAlgorithms
             for (int i = 1; i < T.Length - 1; i++)
             {
                 int mirror = 2 * c - i;
+                
+                // is i lies within the boundary?
                 if (i < r) // is i lessthan the main boundary?
                     lps[i] = Math.Min(r - i, lps[mirror]); // copy the mirror value to lps
+
+                // expand and check
                 while (T[i + (1 + lps[i])] == T[i - (1 + lps[i])]) // compare the values.
                     lps[i]++;
+                
+                // Does it expand beyond R right boundary?
                 if (i + lps[i] > r) // is new pali boundary greater than old boundary?
                 {
                     c = i; // make old center to new pali center.
