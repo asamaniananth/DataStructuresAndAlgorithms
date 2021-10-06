@@ -44,6 +44,47 @@ namespace DataStructuresAndAlgorithms
             #endregion
         }
 
+        public IList<IList<int>> ThreeSum(int[] arr)
+        {
+            //[-4,-1,-1,0,1,2]
+            //[[-1,-1,2],[-1,0,1]]
+            List<IList<int>> res = new List<IList<int>>();
+            Array.Sort(arr);
+            int i = 0;
+            while (i < arr.Length && arr[i] <= 0)
+            {
+                if (i == 0 || arr[i - 1] != arr[i])
+                {
+                    int l = i + 1, r = arr.Length - 1;
+                    int sum = arr[i] + arr[l] + arr[r];
+                    while (l < r)
+                    {
+                        if (sum < 0)
+                        {
+                            l++;
+                        }
+                        else if (sum > 0)
+                        {
+                            r--;
+                        }
+                        else
+                        {
+                            res.Add(new List<int> { arr[i], arr[l], arr[r] });
+                            l++;
+                            r--;
+                            while (l < r && arr[l] == arr[l - 1])
+                            {
+                                l++;
+                            }
+
+                        }
+                    }
+                }
+                i++;
+            }
+            return res;
+        }
+
         public int ReverseNumber(int x)
         {
             if (x < 0) return 0;
@@ -59,6 +100,19 @@ namespace DataStructuresAndAlgorithms
                 reverse = reverse * 10 + reminder;
             }
             return reverse;
+        }        
+
+        public int Fibonacci(int n)
+        {
+            if (n <= 1) return n;
+            int first = 0, second = 1, result = 0;
+            for (int i = 2; i <= n; i++)
+            {
+                result = second + first;
+                first = second;
+                second = result;
+            }
+            return result;
         }
 
         public int SumOfAllEvenNumbersInArray(int[] arr)
@@ -277,6 +331,30 @@ namespace DataStructuresAndAlgorithms
                 if (move2steps == move1step) return true;
             }
             return false;
+        }
+
+        public ListNode RemoveElementFromLinkedList(ListNode head, int n)
+        {
+            if (head.val == n)
+            {
+                head = head.next;
+            }
+            else
+            {
+                ListNode prev = null;
+                ListNode curr = head;
+                while (curr != null)
+                {
+                    prev = curr;
+                    curr = curr.next;
+                    if (curr.val == n)
+                    {
+                        prev.next = curr.next;
+                        return head;
+                    }
+                }
+            }
+            return head;
         }
 
         public ListNodeForCycle DetectCycle(ListNodeForCycle head)
@@ -778,7 +856,7 @@ namespace DataStructuresAndAlgorithms
             for (int i = 1; i < T.Length - 1; i++)
             {
                 int mirror = 2 * c - i;
-                
+
                 // is i lies within the boundary?
                 if (i < r) // is i lessthan the main boundary?
                     lps[i] = Math.Min(r - i, lps[mirror]); // copy the mirror value to lps
@@ -786,7 +864,7 @@ namespace DataStructuresAndAlgorithms
                 // expand and check
                 while (T[i + (1 + lps[i])] == T[i - (1 + lps[i])]) // compare the values.
                     lps[i]++;
-                
+
                 // Does it expand beyond R right boundary?
                 if (i + lps[i] > r) // is new pali boundary greater than old boundary?
                 {
@@ -859,6 +937,43 @@ namespace DataStructuresAndAlgorithms
             return result * sign;
         }
 
+        public int MyAtoi2(string s)
+        {
+            if (String.IsNullOrWhiteSpace(s)) return 0;
+            if (s.Length == 0)
+            {
+                return 0;
+            }
+            int i = 0;
+            while (s[i] == ' ')
+            {
+                i++;
+            }
+            int sign = 1;
+            if (s[i] == '-' || s[i] == '+')
+            {
+                if (s[i] == '-') sign = -1;
+                i++;
+            }
+
+            int result = 0;
+            while (i < s.Length)
+            {
+                if (!(s[i] - '0' >= 0 && s[i] - '0' <= 9)) return result * sign;
+                if (result > int.MaxValue / 10 || (result == int.MaxValue / 10 && s[i] - '0' > int.MaxValue % 10))
+                {
+                    if (sign == 1)
+                    {
+                        return int.MaxValue;
+                    }
+                    return int.MinValue;
+                }
+                result = result * 10 + (s[i] - '0');
+                i++;
+            }
+            return result * sign;
+        }
+
         public int MaxAreaContainerWithMostWater(int[] A)
         {
             int i = 0, j = A.Length - 1, area = 0;
@@ -879,35 +994,7 @@ namespace DataStructuresAndAlgorithms
             string[] M = new string[] { "", "M", "MM", "MMM", "MMMM" };
             return M[(num / 1000)] + C[(num % 1000) / 100] + X[(num % 100) / 10] + I[num % 10];
         }
-
-        public IList<IList<int>> ThreeSum(int[] nums)
-        {
-            Array.Sort(nums);
-            List<IList<int>> result = new List<IList<int>>();
-            List<int> temp = new List<int>();
-            for (int i = 0; i < nums.Length; i++)
-            {
-                int l = i + 1, r = nums.Length - 1, x = nums[i];
-                while (l < r)
-                {
-                    if (x + nums[l] + nums[r] == 0)
-                    {
-                        temp = new List<int> { x, nums[l], nums[r] };
-                        result.Add(temp);
-                    }
-                    else if (x + nums[l] + nums[r] < 0)
-                    {
-                        l++;
-                    }
-                    else
-                    {
-                        r--;
-                    }
-                }
-            }
-            return result;
-        }
-
+        
         public IList<string> LetterCombinations(string digits)
         {
             List<string> temp = new List<string>(); // ex: digits= "234"
@@ -1495,7 +1582,7 @@ namespace DataStructuresAndAlgorithms
                 string word = tokens[i];
                 string temp = word.Substring(0, word.Length - 1);
                 int index = word.Length - 1;
-                if (!dic.ContainsKey(int.Parse(word[index].ToString()))) 
+                if (!dic.ContainsKey(int.Parse(word[index].ToString())))
                     dic.Add(int.Parse(word[index].ToString()), temp);
                 i++;
             }
@@ -1513,12 +1600,12 @@ namespace DataStructuresAndAlgorithms
         public int NumDifferentIntegers(string word)
         {
             HashSet<string> set = new HashSet<string>();
-            string[] tokens = Regex.Replace(word, @"[a-z]+", " ").Split(' ');            
+            string[] tokens = Regex.Replace(word, @"[a-z]+", " ").Split(' ');
             for (int i = 0; i < tokens.Length; i++)
             {
                 if (string.IsNullOrEmpty(tokens[i])) continue;
                 if (!set.Contains(tokens[i].TrimStart('0'))) set.Add(tokens[i].TrimStart('0'));
-                
+
             }
             return set.Count();
         }
@@ -1571,12 +1658,238 @@ namespace DataStructuresAndAlgorithms
                     if (dic.ContainsKey(prerequisites[i][j + 1]) && dic[prerequisites[i][j + 1]] == prerequisites[i][j]) return false;
                     if (prerequisites[i][j] == prerequisites[i][j + 1]) return false;
                     dic.Add(prerequisites[i][j], prerequisites[i][j + 1]);
-                }                
+                }
                 i++;
             }
             return true;
         }
+
+        public string MinWindow(string s, string t)
+        {
+            StringBuilder sb = new StringBuilder();
+            if (s.Length < t.Length) return sb.ToString();
+            Dictionary<char, int> dic = StringToDictionary(t);
+
+            int i = 0, j = t.Length - 1;
+            while (j < s.Length)
+            {
+                if (DoesStringContainAllCharsOf(s.Substring(i, j - i + 1), dic, t))
+                {
+                    sb.Clear();
+                    sb.Append(s.Substring(i, j - i + 1));
+                }
+                else
+                {
+                    j++;
+                    while (j < s.Length)
+                    {
+                        if (DoesStringContainAllCharsOf(s.Substring(i, j - i + 1), dic, t))
+                        {
+                            sb.Clear();
+                            sb.Append(s.Substring(i, j - i + 1));
+                            break;
+                        }
+                        j++;
+                    }
+                }
+                i++;
+                while (i < j && (j - i + 1 >= t.Length) && j < s.Length)
+                {
+                    if (DoesStringContainAllCharsOf(s.Substring(i, j - i + 1), dic, t))
+                    {
+                        if ((j - i + 1) < sb.ToString().Length)
+                        {
+                            sb.Clear();
+                            sb.Append(s.Substring(i, j - i + 1));
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
+                    i++;
+                }
+            }
+            return sb.ToString();
+        }
+
+        public bool DoesStringContainAllCharsOf(string x, Dictionary<char, int> dic, string t)
+        {
+            Dictionary<char, int> xdic = StringToDictionary(x);
+            int i = 0;
+            while (i < t.Length)
+            {
+                if (xdic.ContainsKey(t[i]))
+                {
+                    if (xdic[t[i]] < dic[t[i]])
+                    {
+                        return false;
+                    }
+                }
+                else if (!xdic.ContainsKey(t[i]))
+                {
+                    return false;
+                }
+                i++;
+            }
+            return true;
+        }
+
+        public Dictionary<char, int> StringToDictionary(string t)
+        {
+            Dictionary<char, int> dic = new Dictionary<char, int>();
+            int i = 0;
+            while (i < t.Length)
+            {
+                if (!dic.ContainsKey(t[i]))
+                {
+                    dic.Add(t[i], 1);
+                }
+                else
+                {
+                    dic[t[i]]++;
+                }
+                i++;
+            }
+            return dic;
+        }
+
+        public IList<IList<string>> GroupAnagrams(string[] arr)
+        {
+            List<IList<string>> output = new List<IList<string>>();
+            List<string> result = new List<string>();
+            if (arr.Length == 1)
+            {
+                result.Add(arr[0]);
+                output.Add(result);
+                return output;
+            }
+            if (IsValidAnagram(arr[0], arr[1]))
+            {
+                result.Add(arr[0]);
+                result.Add(arr[1]);
+                output.Add(result);
+            }
+            else
+            {
+                output.Add(new List<string> { arr[0] });
+                output.Add(new List<string> { arr[1] });
+            }
+            int x = 2;
+            while (x < arr.Length)
+            {
+                int y = 0;
+                while (y < output.Count)
+                {
+                    if (IsValidAnagram(arr[x], output[y][0]))
+                    {
+                        output[y].Add(arr[x]);
+                        break;
+                    }
+                    else if (y == output.Count - 1)
+                    {
+                        output.Add(new List<string> { arr[x] });
+                        break;
+                    }
+                    y++;
+                }
+                x++;
+            }
+            return output;
+        }
+
+        public bool IsValidAnagram(string a, string b)
+        {
+            if (a.Length != b.Length) return false;
+            Dictionary<char, int> dict = new Dictionary<char, int>();
+            int i = 0, j = 0;
+            while (i < a.Length)
+            {
+                if (!dict.ContainsKey(a[i]))
+                {
+                    dict.Add(a[i], 1);
+                }
+                else
+                {
+                    dict[a[i]]++;
+                }
+                i++;
+            }
+            while (j < b.Length)
+            {
+                if (!dict.ContainsKey(b[j]))
+                {
+                    //dict.Clear();
+                    return false;
+                }
+                else
+                {
+                    dict[b[j]]--;
+                    if (dict[b[j]] < 0)
+                    {
+                        //dict.Clear();
+                        return false;
+                    }
+                }
+                j++;
+            }
+            //dict.Clear();
+            return true;
+        }
+
+        public IList<IList<string>> GroupAnagrams2(string[] arr)
+        {
+            List<IList<string>> output = new List<IList<string>>();
+            Dictionary<string, List<string>> dict = new Dictionary<string, List<string>>();
+            int i = 0;
+            while (i < arr.Length)
+            {
+                char[] ch = arr[i].ToCharArray();
+                Array.Sort(ch);
+                string key = new string(ch);
+                if (!dict.ContainsKey(key))
+                {
+                    dict.Add(key, new List<string>());
+                }
+                dict[key].Add(arr[i]);
+                i++;
+            }
+            foreach (var x in dict.Values)
+            {
+                output.Add(x);
+            }
+            return output;
+        }
+
+        public bool IsPalindromeStringWithOnlyAlphaNumericCharacters(string s)
+        {
+            //string a = Regex.Replace(s,@"[A-Za-z0-9]+","").ToLower();
+            int head = 0, tail = s.Length - 1;
+            while (head <= tail)
+            {
+                if (!Char.IsLetterOrDigit(s[head]))
+                {
+                    head++;
+                }
+                else if (!Char.IsLetterOrDigit(s[tail]))
+                {
+                    tail--;
+                }
+                else
+                {
+                    if (Char.ToLower(s[head]) != Char.ToLower(s[tail]))
+                    {
+                        return false;
+                    }
+                    head++;
+                    tail--;
+                }
+            }
+            return true;
+        }
+
     }
+
 
     #region ListNode
     public class ListNode
@@ -1836,13 +2149,125 @@ namespace DataStructuresAndAlgorithms
             if (inostart == inoend) return tree;
 
             int indexCurRoot = dic[curRoot];
-            tree.right = BinaryTreeFromInorderAndPostorderUtil(inorder, preorder, indexCurRoot + 1, inoend);
-            tree.left = BinaryTreeFromInorderAndPostorderUtil(inorder, preorder, inostart, indexCurRoot - 1);
+            tree.left = BinaryTreeFromInorderAndPreorderUtil(inorder, preorder, inostart, indexCurRoot - 1);
+            tree.right = BinaryTreeFromInorderAndPreorderUtil(inorder, preorder, indexCurRoot + 1, inoend);
+
 
             return tree;
         }
     }
     #endregion
 
+    #region
+    public class IsValidBSTClass
+    {
+        int lastVal;
+        public bool IsValidBST(TreeNode root)
+        {
+            if (root == null) return true;
+
+            if (!IsValidBST(root.left)) return false;
+
+            if (root.val <= lastVal) return false;
+            lastVal = root.val;
+
+            if (!IsValidBST(root.right)) return false;
+            return true;
+        }
+    }
+
+    #endregion
+
+    #region Trie class
+    public class Trie
+    {
+
+        TrieNode root;
+
+        /** Initialize your data structure here. */
+        public Trie()
+        {
+            root = new TrieNode();
+        }
+
+        /** Inserts a word into the trie. */
+        public void Insert(string word)
+        {
+            TrieNode node = root;
+            int i = 0, index;
+            while (i < word.Length)
+            {
+                index = word[i] - 'a';
+                if (node.Children[index] == null)
+                {
+                    node.Children[index] = new TrieNode();
+                }
+
+                node = node.Children[index];
+
+                i++;
+            }
+            node.IsEndOfTheWord = true;
+        }
+
+        /** Returns if the word is in the trie. */
+        public bool Search(string word)
+        {
+            TrieNode node = root;
+            int i = 0, index;
+            while (i < word.Length)
+            {
+                index = word[i] - 'a';
+                if (node.Children[index] == null)
+                {
+                    return false;
+                }
+                node = node.Children[index];
+
+                i++;
+            }
+            return node.IsEndOfTheWord && node != null;
+        }
+
+        /** Returns if there is any word in the trie that starts with the given prefix. */
+        public bool StartsWith(string word)
+        {
+            TrieNode node = root;
+            int i = 0, index;
+            while (i < word.Length)
+            {
+                index = word[i] - 'a';
+                if (node.Children[index] == null)
+                {
+                    return false;
+                }
+                node = node.Children[index];
+
+                i++;
+            }
+            return node != null;
+        }
+    }
+
+    public class TrieNode
+    {
+        readonly int AlphabetSize = 26;
+        public bool IsEndOfTheWord;
+        public TrieNode[] Children;
+        public TrieNode()
+        {
+            IsEndOfTheWord = false;
+            Children = new TrieNode[AlphabetSize];
+
+            int i = 0;
+            while (i < Children.Length)
+            {
+                Children[i] = null;
+                i++;
+            }
+        }
+    }
+
+    #endregion
 
 }

@@ -315,6 +315,7 @@ namespace DataStructuresAndAlgorithms
 
         public void MaxHeapify(int[] A, int i, int length)
         {
+            // O(n) time complexity
             int largest = i;
             int left = 2 * i + 1;
             int right = 2 * i + 2;
@@ -354,6 +355,7 @@ namespace DataStructuresAndAlgorithms
 
         public void MinHeapify(int[] A, int i, int length)
         {
+            // O(n) time complexity
             int smallest = i;
             int left = 2 * i + 1;
             int right = 2 * i + 2;
@@ -374,7 +376,8 @@ namespace DataStructuresAndAlgorithms
 
         public void BuildMinHeap(int[] A, int length)
         {
-            for (int i = (A.Length / 2) - 1; i >= 0; i--)
+            // We heapify only from non leaf nodes, (a.length/2)-1 gives non leaf node
+            for (int i = (A.Length / 2) - 1; i >= 0; i--) 
             {
                 MinHeapify(A, i, length);
             }

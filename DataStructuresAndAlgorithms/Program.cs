@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace DataStructuresAndAlgorithms
@@ -82,7 +83,7 @@ namespace DataStructuresAndAlgorithms
             //int[] output = leetCodeProblems.TwoSum(new int[] { 3,2,4}, 6);
             //int output = leetCodeProblems.SumOfAllEvenNumbersInArray(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 });
             //int output = leetCodeProblems.ReverseNumber(1534236469);
-            //bool output = leetCodeProblems.IsPalindrome(-121);
+            //bool output = leetCodeProblems.IsPalindrome(121);
             //int output = leetCodeProblems.RomanToInt("III");
             //string output= leetCodeProblems.LongestCommonPrefix(new string[] { "aa", "a" });
             //bool output = leetCodeProblems.IsValidParentheses("(]{}");
@@ -161,7 +162,16 @@ namespace DataStructuresAndAlgorithms
             //leetCodeProblems.SortSentence("is2 sentence4 This1 a3");
             //leetCodeProblems.NumDifferentIntegers("a123bc34d8ef34");
             //leetCodeProblems.LengthOfLastWord("a ");
-            leetCodeProblems.PartitionLabels("ababcbacadefegdehijhklij");
+            //leetCodeProblems.PartitionLabels("ababcbacadefegdehijhklij");
+            //string output= leetCodeProblems.MinWindow("ADOBECODEBANC", "ABC");
+            //var output = leetCodeProblems.GroupAnagrams2(new string[] { "eat", "tea", "tan", "ate", "nat", "bat" });
+            //var output = Regex.Replace("A man, a plan, 987 a canal: Panama", @"[A-Za-z,]+","");
+            //var output = leetCodeProblems.IsPalindromeStringWithOnlyAlphaNumericCharacters("race a car");
+            //Graph2 gra = new Graph2();
+            //var output = gra.CanFinish(2, new int[1][] { new int[] { 1,0} });
+            //var output = leetCodeProblems.ThreeSum(new int[] { -1, 0, 1, 2, -1, -4 });
+            Dinosaur di = new Dinosaur();
+            di.ReadAndCalculate();
 
             #endregion
 
