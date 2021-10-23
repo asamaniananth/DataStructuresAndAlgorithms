@@ -141,4 +141,72 @@ namespace DataStructuresAndAlgorithms
             return true;
         }
     }
+
+    public class TopologicalSort
+    {
+        List<int>[] adj;
+        public int[] TopologicalSortFindOrder(int numCourses, int[][] prerequisites)
+        {
+            if (prerequisites.Length == 0 && numCourses == 1) return new int[] { 0 };
+            if (prerequisites.Length == 0 && numCourses == 2) return new int[] { 1, 0 };
+
+            adj = new List<int>[numCourses];
+
+            for (int i = 0; i < numCourses; i++)
+            {
+                adj[i] = new List<int>();
+            }
+
+            for (int i = 0; i < prerequisites.Length; i++)
+            {
+                adj[prerequisites[i][1]].Add(prerequisites[i][0]);
+            }
+
+            int[] indegree = new int[numCourses];
+
+            for (int i = 0; i < numCourses; i++)
+            {
+                List<int> temp = adj[i];
+                foreach (int node in temp)
+                {
+                    indegree[node]++;
+                }
+            }
+
+            Queue<int> q = new Queue<int>();
+
+            for (int i = 0; i < numCourses; i++)
+            {
+                if (indegree[i] == 0)
+                {
+                    q.Enqueue(i);
+                }
+            }
+
+            int cnt = 0;
+            List<int> topSort = new List<int>();
+
+            while (q.Count > 0)
+            {
+                int u = q.Dequeue();
+                topSort.Add(u);
+
+                foreach (int x in adj[u])
+                {
+                    indegree[x]--;
+                    if (indegree[x] == 0)
+                    {
+                        q.Enqueue(x);
+                    }
+                }
+                cnt++;
+            }
+
+            if (cnt != numCourses)
+            {
+                return new int[0];
+            }
+            return topSort.ToArray();
+        }
+    }
 }

@@ -187,6 +187,79 @@ namespace DataStructuresAndAlgorithms
             return longest;
         }
 
+        public int LengthOfLongestSubstringTwoDistinct(string s)
+        {
+            int left = 0, right = 0, res = 0;
+
+            Dictionary<char, int> dict = new Dictionary<char, int>();
+
+            while (right < s.Length)
+            {
+                if (!dict.ContainsKey(s[right]))
+                {
+                    dict.Add(s[right], right);
+                }
+                else
+                {
+                    dict[s[right]] = right;
+                }
+                if (dict.Count > 2)
+                {
+                    int smallest = int.MaxValue;
+                    foreach (var x in dict.Values)
+                    {
+                        if (x < smallest)
+                        {
+                            smallest = x;
+                        }
+                    }
+                    left = smallest + 1;
+                    dict.Remove(s[smallest]);
+                }
+                res = Math.Max(res, right - left + 1);
+
+                right++;
+            }
+            return res;
+        }
+
+        public int TotalFruit(int[] f)
+        {
+            // Same as LengthOfLongestSubstringTwoDistinct, LengthOfLongestSubstringKDistinct
+            int left = 0, right = 0, res = 0;
+
+            Dictionary<int, int> dict = new Dictionary<int, int>();
+
+            while (right < f.Length)
+            {
+                if (!dict.ContainsKey(f[right]))
+                {
+                    dict.Add(f[right], right);
+                }
+                else
+                {
+                    dict[f[right]] = right;
+                }
+                if (dict.Count > 2)
+                {
+                    int smallest = int.MaxValue;
+                    foreach (var x in dict.Values)
+                    {
+                        if (x < smallest)
+                        {
+                            smallest = x;
+                        }
+                    }
+                    left = smallest + 1;
+                    dict.Remove(f[smallest]);
+                }
+                res = Math.Max(res, right - left + 1);
+
+                right++;
+            }
+            return res;
+        }
+
         public bool IsValidParentheses(string s)
         {
             Stack<char> stack = new Stack<char>();
@@ -215,6 +288,58 @@ namespace DataStructuresAndAlgorithms
                 }
             }
             return stack.Any() ? false : true;
+        }
+
+        public string Multiply(string num1, string num2)
+        {
+            BigInteger f = atoi(num1);
+            BigInteger s = atoi(num2);
+            BigInteger res = f * s;
+            return res.ToString();
+        }
+
+        public string FindReplaceString(string s, int[] indices, string[] sources, string[] targets)
+        {
+            Dictionary<int, string> sDict = new Dictionary<int, string>();
+            Dictionary<int, string> tDict = new Dictionary<int, string>();
+
+            for (int i = 0; i < indices.Length; i++)
+            {
+                sDict.Add(indices[i], sources[i]);
+                tDict.Add(indices[i], targets[i]);
+            }
+
+            Array.Sort(indices);
+            StringBuilder sb = new StringBuilder(s);
+
+            int j = indices.Length - 1;
+            while (j >= 0)
+            {
+                if (s.Substring(indices[j], sDict[indices[j]].Length) == sDict[indices[j]])
+                {
+                    sb.Remove(indices[j], sDict[indices[j]].Length);
+                    sb.Insert(indices[j], tDict[indices[j]]);
+                }
+                j--;
+            }
+
+            return sb.ToString();            
+        }
+
+        public BigInteger atoi(string s)
+        {
+            BigInteger res = 0;
+            int i = 0;
+            while (i < s.Length)
+            {
+                if (!(s[i] - '0' >= 0 && s[i] - '0' <= 9)) return res;
+                //if(res > BigInteger.MaxValue/10 || (res ==BigInteger.MaxValue/10 && s[i]> BigInteger.MaxValue %10)){
+                //  return BigInteger.MaxValue;
+                //}
+                res = res * 10 + s[i] - '0';
+                i++;
+            }
+            return res;
         }
 
         // l1: 1->2->4, 
@@ -251,6 +376,34 @@ namespace DataStructuresAndAlgorithms
                 l2 = l2.next;
             }
             return dummy.next;
+        }
+
+        public IList<string> FindMissingRanges(int[] nums, int lower, int upper)
+        {
+            List<string> res = new List<string>();
+            int prev = lower - 1;
+            int i = 0;
+            while (i <= nums.Length)
+            {
+                int curr = (i < nums.Length) ? nums[i] : upper + 1;
+                if (prev + 1 <= curr - 1)
+                {
+                    res.Add(helper(prev + 1, curr - 1));
+                }
+                prev = curr;
+                i++;
+            }
+
+            return res;
+        }
+
+        public string helper(int lower, int upper)
+        {
+            if (lower == upper)
+            {
+                return lower.ToString();
+            }
+            return lower.ToString() + "->" + upper.ToString();
         }
 
         public int RemoveDuplicates(int[] nums)
@@ -306,6 +459,47 @@ namespace DataStructuresAndAlgorithms
                 }
             }
             return (target <= nums[start]) ? start : start + 1;
+        }
+
+        public void RotateMatrixBy90(int[][] matrix)
+        {
+            TransposeOfMatrix(matrix);
+            SwapElementsInMatrix(matrix);            
+        }
+
+        public void TransposeOfMatrix(int[][] mat)
+        {
+            int rowLen = mat.Length;
+            int colLen = mat[0].Length;
+
+            for(int i = 0; i < rowLen; i++)
+            {
+                for(int j = i; j < colLen; j++)
+                {
+                    if (i != j) //Avoid diagnol, because we don't swap diagnol elements
+                    {
+                        int temp = mat[i][j];
+                        mat[i][j] = mat[j][i];
+                        mat[j][i] = temp;
+                    }
+                }
+            }
+        }
+
+        public void SwapElementsInMatrix(int[][] mat)
+        {
+            int rowLen = mat.Length;
+            int colLen = mat[0].Length;
+
+            for (int i = 0; i < rowLen; i++)
+            {
+                for(int j = 0; j < colLen / 2; j++)
+                {
+                    int temp = mat[i][j];
+                    mat[i][j] = mat[i][colLen - 1 - j];
+                    mat[i][colLen - 1 - j] = temp;
+                }
+            }
         }
 
         public class ListNodeForCycle
@@ -812,6 +1006,36 @@ namespace DataStructuresAndAlgorithms
             return dummy.next;
         }
 
+        public ListNode RemoveNthFromEnd(ListNode head, int n)
+        {
+            //https://www.geeksforgeeks.org/delete-nth-node-from-the-end-of-the-given-linked-list/
+            ListNode first = head;
+            ListNode second = head;
+            int i = 0;
+            while (i < n)
+            {
+                if (second.next == null)
+                {
+                    if (i == n - 1)
+                    {
+                        head = head.next;
+                        return head;
+                    }
+                }
+
+                second = second.next;
+                i++;
+            }
+
+            while (second.next != null)
+            {
+                second = second.next;
+                first = first.next;
+            }
+            first.next = first.next.next;
+            return head;
+        }
+
         public int LengthOfLongestSubstring(string s)
         {
             int right = 0, left = 0, maxLen = 0;
@@ -976,12 +1200,13 @@ namespace DataStructuresAndAlgorithms
 
         public int MaxAreaContainerWithMostWater(int[] A)
         {
+            //https://www.youtube.com/watch?v=4GIIy1o-3DM&ab_channel=jayatitiwari
             int i = 0, j = A.Length - 1, area = 0;
             while (i < j)
             {
                 area = Math.Max(area, ((j - i) * Math.Min(A[i], A[j])));
-                if (A[i] > A[j]) j--;
-                else i++;
+                if (A[i] < A[j]) i++;
+                else j--;
             }
             return area;
         }
@@ -1571,6 +1796,67 @@ namespace DataStructuresAndAlgorithms
             return sb.ToString();
         }
 
+        public int[][] KClosest(int[][] points, int k)
+        {
+            //https://www.geeksforgeeks.org/find-k-closest-points-to-the-origin/
+            int n = points.Length;
+            int[] distance = new int[n];
+            for (int i = 0; i < n; i++)
+            {
+                int x = points[i][0], y = points[i][1];
+                distance[i] = (x * x) + (y * y);
+            }
+
+            Array.Sort(distance);
+            int distK = distance[k - 1];
+            List<int[]> res = new List<int[]>();
+
+            for (int i = 0; i < n; i++)
+            {
+                int x = points[i][0], y = points[i][1];
+                int dist = (x * x) + (y * y);
+                if (dist <= distK)
+                {
+                    res.Add(new int[] { points[i][0], points[i][1] });
+                }
+            }
+            int[][] jaggedArr = new int[res.Count][];
+
+            for (int i = 0; i < res.Count; i++)
+            {
+                jaggedArr[i] = res[i];
+            }
+
+            return jaggedArr;
+        }
+
+        public bool BackspaceCompare(string s, string t)
+        {
+            string a = BackspaceCompareHelper(s);
+            string b = BackspaceCompareHelper(t);
+            return a == b;
+        }
+
+        public string BackspaceCompareHelper(string s)
+        {
+            Stack<char> st = new Stack<char>();
+            int i = 0;
+            while (i < s.Length)
+            {
+                if (s[i] != '#')
+                {
+                    st.Push(s[i]);
+                }
+                else if (st.Count > 0)
+                {
+                    st.Pop();
+
+                }
+                i++;
+            }
+            return new string(st.ToArray());
+        }
+
         public string SortSentence(string s)
         {
             Dictionary<int, string> dic = new Dictionary<int, string>();
@@ -1608,6 +1894,82 @@ namespace DataStructuresAndAlgorithms
 
             }
             return set.Count();
+        }
+
+        public string DecodeString(string s)
+        {
+            Stack<int> intSt = new Stack<int>();
+            Stack<char> charSt = new Stack<char>();
+            string result = "", temp = "";
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                int count = 0;
+                if (char.IsDigit(s[i]))
+                {
+                    while (char.IsDigit(s[i]))
+                    {
+                        count = count * 10 + s[i] - '0';
+                        i++;
+                    }
+                    i--;
+                    intSt.Push(count);
+                }
+                else if (s[i] == '[')
+                {
+                    if (char.IsDigit(s[i - 1]))
+                    {
+                        charSt.Push(s[i]);
+                    }
+                    else
+                    {
+                        intSt.Push(1);
+                        charSt.Push(s[i]);
+                    }
+                }
+                else if (s[i] == ']')
+                {
+                    temp = "";
+                    count = 0;
+                    while (charSt.Count > 0 && charSt.Peek() != '[')
+                    {
+                        temp = charSt.Peek() + temp;
+                        charSt.Pop();
+                    }
+
+                    if (charSt.Count > 0 && charSt.Peek() == '[')
+                    {
+                        charSt.Pop();
+                    }
+                    if (intSt.Count > 0)
+                    {
+                        count = intSt.Peek();
+                        intSt.Pop();
+                    }
+
+                    for (int j = 0; j < count; j++)
+                    {
+                        result = result + temp;
+                    }
+
+                    for (int j = 0; j < result.Length; j++)
+                    {
+                        charSt.Push(result[j]);
+                    }
+                    result = "";
+                }
+                else
+                {
+                    charSt.Push(s[i]);
+                }
+            }
+
+            while (charSt.Count > 0)
+            {
+                result = charSt.Peek() + result;
+                charSt.Pop();
+            }
+            return result;
         }
 
         public int LengthOfLastWord(string s)
@@ -1886,6 +2248,42 @@ namespace DataStructuresAndAlgorithms
                 }
             }
             return true;
+        }
+
+        public int NumUniqueEmails(string[] e)
+        {
+            int i = 0;
+            //int res=0;
+            HashSet<string> res = new HashSet<string>();
+            while (i < e.Length)
+            {
+                string[] part = e[i].Split('@');
+                string[] local = part[0].Split('+');
+                //if(part[1].Split(".").Length >2){
+                //  i++;
+                //continue;
+                //}
+                //res++;
+                res.Add(local[0].Replace(".", "") + "@" + part[1]);
+                i++;
+            }
+            return res.Count;
+        }
+
+        public string LicenseKeyFormatting(string s, int k)
+        {
+            s = s.Replace("-", "").ToUpper();
+            StringBuilder sb = new StringBuilder();
+            int i = s.Length;
+            while (i > k)
+            {
+                i = i - k;
+                string r = s.Substring(i, k);
+                sb.Insert(0, r);
+                sb.Insert(0, '-');
+            }
+            sb.Insert(0, s.Substring(0, i));
+            return sb.ToString();
         }
 
     }

@@ -109,12 +109,12 @@ namespace DataStructuresAndAlgorithms
             //int output = leetCodeProblems.PeakIndexInMountainArray(new int[] { 3, 4, 5, 1 });
             //string[] input = new string[] { "pxlqovnbsgvqjzpfeidchzrodnbqfrccfydzjptukscjuatlsrcurepllxzyghhdepitqptlmfkhzxjgswaulxkfydhkilg", "uqklvqnlhdkwryjawkqfajfpbcnhglxlwxlaskxlytr", "jvgkxcdkxrvfahjkvhmfuyjzxtyxrsogbtsjybeaxugqymcr", "rgxditmosplnqvodtis", "jm", "ruqjwejuanjtiizcmbieobesnjnadzqvqumggblzmkxilgfarnxwpcawtkzxlvugibpidvwtikloeziuxqoi", "wxeyzrnbhlhwxecrgejsrawyulynvgtszwqqlihkcvckgcgtgpyqtkuwvjywmhpskaiwmpyarftqhnogxpith", "vdpbykqlihtpvfnqbrcjpggojqbalerohyitktuikbffvfatcnneuvbanjihiaorrjcdthntnrxebfhvshmpodmzhtwnasbm", "wgjstkoaojcesfdrllugmojwdmgeejyiqvshlowtktddattunarnohgvqsoskfmbrami", "ecwqxbawirvnxvsjybbebclaturorlcbpf", "gtjbaigvufrotlwfoqqolnjabnvtbcygtfcytinzpcjbvprdkdjawrcbthmxjrabimhhs", "cvzlbrvppkyxtjxzeglzwoagmpjnfxddbwolxmwdohgtfktgftzzkwpianslkpldyfzubtjczse", "neaw", "mxhmvkajofnmdiiduactlemcvpztscmsnrdhuhquxnnzywsrzxyplgbppiypxwcfbsnyzblaeifo", "krekecabfpufucjhqphjnibaeqdvdpmrfougdwugvoioqangdnxromwlxnfeydaneyazzclscqgdxlhhgnoqmslfflzqv", "klutvchxsceihfmzitgqakytesfjykribjhjzdruuoycjkwaghmmqkfrhkrtawudtjyjwqbyspamlegqjlwlj", "raykfkflqdzrpthdejetwolgciygwaktulkxemkdbbllkjxhnnafsms", "os", "xhchkcetmlprcdmrnalvkvgabxxnomphqpqhnddqhecogspbdebeoshvjgzvmqu", "jqtdysnpskktynxwmsfaabglagnqcllptvuyyqjwrmqaftenusmsahhhqubkwxltpr", "sulmwluiwvlroldpiyecaicwrawzwflokefqkdwmxejaovvpbflfdtviinbvvtlhhhefmgfsqs", "sxyhcckvyl", "vsaacsybcddxvuzkddjmuivsvtjyanpbydmkcwnkmxvsiantgkvkmqjysclsvd", "sxcghypulvmfqfunxj", "pozekufhlooosxpcggbi", "xzaoxzllcixfqbupqozmzrnugj", "j", "tgslwp", "ntrdkixexajlpjgmcbrqimwtqnzfrqjszeiuvrgzclerzmsnagzaxbredvlrmipzflrzusclckmxphc", "ifdflsywdfizpodsehrrifsvejcxarrxmxyjgbbvqyqvywncphzfmnxhybxpdcozfnzablfx", "uluhplzrsaehaqxfnbcmixueedevhirbwqdyztwaxnkogcauymxgcpabxekib", "agtfkinbdccoemxetbryzpluzlpyzicnfopphrxriqm", "pdympxpwvxwcqaxrvbvyqkrresrjgzgxuyfxtkgldtathokdbyfsqfmitmiyagtqgijaiazvsumeyutbbwxqdshquzrehn", "rqe", "sljsvenhhstnnngzqyo", "dezrzpgldeimxfoqajuhjctgvalwkhkjemjaxumxqmifglbizusuqlttxirpbqbuvauwy", "dkwpyezbmkcskoxxcgrxcewknqgdckjxfyzcmzqcbyeucxbqybxoldogtkmdknsrruvnlfqnpfx", "sjeftmjkuperfynbreycwhuoyqybticswblbrrpugzhlrmiedjqufnehevzqwtaebwvdswsz", "lolnfyliloqmhjmhhohdtgfajjfdjqpubslbsrwitbjmrcegdrdjzvonxaefdvdfcbqmaaks", "qhcoaiocjhuzywkirlblajgeapzajqsoa", "sxrmoqxqbtakuqwmrrkljmegbwbeqbywmlyuprwyhljzejbybxoumidpxdrohwdjoqycpxcmivaulnqzneydwqfsvcxgyyseuk", "yrowy", "dohrzkrzdjehpctnjrvhzojullsiucrhphshwxwicyzkvzbqrztic", "rmshnxtbhsdgkiijrmwulocdzjzpgfyimkjdthuzkhoqgkeawgwincubrloknocxwzgqqcxafksxgzh", "aymovnuhptozhkiyowbeguzlkmrwjnujgjbdne", "abc", "vxoigovwmqizmkwbkktqk", "uokwktdempzloaglvvkqstztmwzcmhgxtoua", "bzwjxqueazlzfojrkbqmhtwrvuwsnfcnylurnddpektekca", "qgndjgvzcyajhgmrrnhdywwdbmkhtthwcfiueuxfldanyrmccwcy" };
             //int output = leetCodeProblems.CountCharacters(input, "figspbov");
-            //ListNode dummy1 = new ListNode(5);
-            //dummy1.next = new ListNode(6);
-            //dummy1.next.next = new ListNode(4);
-            //ListNode dummy2 = new ListNode(1);
-            //dummy2.next = new ListNode(0);
-            //dummy2.next.next = new ListNode(0);            
+            //ListNode dummy1 = new ListNode(2);
+            //dummy1.next = new ListNode(4);
+            //dummy1.next.next = new ListNode(3);
+            //ListNode dummy2 = new ListNode(5);
+            //dummy2.next = new ListNode(6);
+            //dummy2.next.next = new ListNode(4);
             //ListNode output = leetCodeProblems.AddTwoNumbers(dummy2, dummy1);
             //int output = leetCodeProblems.LengthOfLongestSubstring("bbbbb");
             //string lps = leetCodeProblems.LongestPalindrome("cbbd");
@@ -170,8 +170,17 @@ namespace DataStructuresAndAlgorithms
             //Graph2 gra = new Graph2();
             //var output = gra.CanFinish(2, new int[1][] { new int[] { 1,0} });
             //var output = leetCodeProblems.ThreeSum(new int[] { -1, 0, 1, 2, -1, -4 });
-            Dinosaur di = new Dinosaur();
-            di.ReadAndCalculate();
+            //Dinosaur di = new Dinosaur();
+            //di.ReadAndCalculate();
+            //var output = leetCodeProblems.NumUniqueEmails(new string[] { "test.email+alex@leetcode.com", "test.email.leet+alex@code.com" });
+            //var output = leetCodeProblems.LicenseKeyFormatting("5F3Z-2e-9-w", 4);
+            //var output = leetCodeProblems.FindReplaceString("abcd", new int[] { 0, 2 }, new string[] { "a", "cd" }, new string[] { "eee", "ffff" });
+            //var output = leetCodeProblems.BackspaceCompare("a#c","b");
+
+            //int[][] jArray = new int[2][]{ new int[2]{1,3},
+            //                               new int[2]{ -2, 2 }
+            //                             };
+            //var output = leetCodeProblems.KClosest(jArray, 1);
 
             #endregion
 
