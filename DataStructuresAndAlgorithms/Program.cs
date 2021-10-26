@@ -122,10 +122,10 @@ namespace DataStructuresAndAlgorithms
             //int output = leetCodeProblems.MaxAreaContainerWithMostWater(new int[] { 1, 8, 6, 2, 5, 4, 8, 3, 7 });
             //string output = leetCodeProblems.IntToRoman(2859);
             //IList<IList<int>> output = leetCodeProblems.ThreeSum(new int[] { -1, 0, 1, 2, -1, -4 });
-            //IList<string> output = leetCodeProblems.LetterCombinations("3");
+            //IList<string> output = leetCodeProblems.LetterCombinations("234");
             //int n = 3;
             //char[] str = new char[2 * n];
-            //List<string> output= leetCodeProblems.printParenthesis(str, n);
+            //List<string> output = leetCodeProblems.printParenthesis(str, n);
             //int output = leetCodeProblems.Search(new int[] {1,3}, 0);
             //int[] output = leetCodeProblems.SearchRange(new int[] { 5, 7, 7, 8, 8, 10 }, 8);
             //int[] output = leetCodeProblems.SearchOccurenceRange(new int[] { 5, 7, 7, 8, 8, 10 }, 8);
@@ -181,6 +181,8 @@ namespace DataStructuresAndAlgorithms
             //                               new int[2]{ -2, 2 }
             //                             };
             //var output = leetCodeProblems.KClosest(jArray, 1);
+            var output = leetCodeProblems.GetHint("1123", "0111");
+
 
             #endregion
 

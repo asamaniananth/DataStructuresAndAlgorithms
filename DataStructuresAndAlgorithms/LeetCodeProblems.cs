@@ -100,7 +100,7 @@ namespace DataStructuresAndAlgorithms
                 reverse = reverse * 10 + reminder;
             }
             return reverse;
-        }        
+        }
 
         public int Fibonacci(int n)
         {
@@ -323,7 +323,7 @@ namespace DataStructuresAndAlgorithms
                 j--;
             }
 
-            return sb.ToString();            
+            return sb.ToString();
         }
 
         public BigInteger atoi(string s)
@@ -406,6 +406,56 @@ namespace DataStructuresAndAlgorithms
             return lower.ToString() + "->" + upper.ToString();
         }
 
+        public double FindMedianSortedArrays(int[] nums1, int[] nums2)
+        {
+            int[] result = MergeTwoSortedArrays(nums1, nums2);
+            bool IsEven = (result.Length % 2 == 0) ? true : false;
+            double median = 0;
+            if (IsEven)
+            {
+                median = (double)(result[result.Length / 2] + result[(result.Length / 2) - 1]) / 2;
+            }
+            else
+            {
+                median = (double)result[result.Length / 2];
+            }
+            return median;
+        }
+
+        public int[] MergeTwoSortedArrays(int[] a, int[] b)
+        {
+            int mergedLength = a.Length + b.Length;
+            int[] result = new int[mergedLength];
+            int i = 0, j = 0, k = 0;
+            while (i < a.Length && j < b.Length)
+            {
+                if (a[i] < b[j])
+                {
+                    result[k] = a[i];
+                    i++;
+                }
+                else
+                {
+                    result[k] = b[j];
+                    j++;
+                }
+                k++;
+            }
+            while (i < a.Length)
+            {
+                result[k] = a[i];
+                i++;
+                k++;
+            }
+            while (j < b.Length)
+            {
+                result[k] = b[j];
+                j++;
+                k++;
+            }
+            return result;
+        }
+
         public int RemoveDuplicates(int[] nums)
         {
             int i = 0;
@@ -464,7 +514,7 @@ namespace DataStructuresAndAlgorithms
         public void RotateMatrixBy90(int[][] matrix)
         {
             TransposeOfMatrix(matrix);
-            SwapElementsInMatrix(matrix);            
+            SwapElementsInMatrix(matrix);
         }
 
         public void TransposeOfMatrix(int[][] mat)
@@ -472,9 +522,9 @@ namespace DataStructuresAndAlgorithms
             int rowLen = mat.Length;
             int colLen = mat[0].Length;
 
-            for(int i = 0; i < rowLen; i++)
+            for (int i = 0; i < rowLen; i++)
             {
-                for(int j = i; j < colLen; j++)
+                for (int j = i; j < colLen; j++)
                 {
                     if (i != j) //Avoid diagnol, because we don't swap diagnol elements
                     {
@@ -493,7 +543,7 @@ namespace DataStructuresAndAlgorithms
 
             for (int i = 0; i < rowLen; i++)
             {
-                for(int j = 0; j < colLen / 2; j++)
+                for (int j = 0; j < colLen / 2; j++)
                 {
                     int temp = mat[i][j];
                     mat[i][j] = mat[i][colLen - 1 - j];
@@ -754,6 +804,8 @@ namespace DataStructuresAndAlgorithms
 
         public bool IsIsomorphic(string s, string t)
         {
+            //s = "egg", t = "add" ans true
+            //s = "foo", t = "bar" ans false
             if (s.Length != t.Length) return false;
             for (int i = 0; i < s.Length; ++i)
             {
@@ -763,6 +815,31 @@ namespace DataStructuresAndAlgorithms
                 }
             }
             return true;
+        }
+
+        public bool IsStrobogrammatic(string num)
+        {
+            Dictionary<char, char> dict = new Dictionary<char, char>{
+                                                                        {'0','0'},
+                                                                        {'1','1'},
+                                                                        {'6','9'},
+                                                                        {'8','8'},
+                                                                        {'9','6'}
+                                                                    };
+
+            StringBuilder sb = new StringBuilder();
+            int i = num.Length - 1;
+            while (i >= 0)
+            {
+                if (!dict.ContainsKey(num[i]))
+                {
+                    return false;
+                }
+                sb.Append(dict[num[i]]);
+
+                i--;
+            }
+            return num.Equals(sb.ToString());
         }
 
         public TreeNode InvertTree(TreeNode root)
@@ -929,6 +1006,8 @@ namespace DataStructuresAndAlgorithms
 
         public int FindPeak(int[] A, int start, int end)
         {
+            //0,1,2,3
+            //3,4,5,1
             int mid = start + (end - start) / 2;
             int prev = mid - 1;
             int next = mid + 1;
@@ -977,6 +1056,56 @@ namespace DataStructuresAndAlgorithms
                 }
             }
             return result;
+        }
+
+        public string GetHint(string secret, string guess)
+        {
+            if (secret.Length != guess.Length) return "0A0B";
+            Dictionary<char, int> dict = new Dictionary<char, int>();
+            int i = 0;
+            while (i < secret.Length)
+            {
+                if (!dict.ContainsKey(secret[i]))
+                {
+                    dict.Add(secret[i], 1);
+                }
+                else
+                {
+                    dict[secret[i]]++;
+                }
+                i++;
+            }
+
+            i = 0;
+            int j = 0, bulls = 0, cows = 0;
+            while (i < secret.Length && j < guess.Length)
+            {
+                if (dict.ContainsKey(guess[j]))
+                {
+                    if (guess[j] == secret[i])
+                    {
+                        bulls++;
+                        if (dict[guess[j]] <= 0)
+                        {
+                            cows--;
+                        }
+                    }
+                    else
+                    {
+                        if (dict[guess[j]] > 0)
+                        {
+                            cows++;
+                        }
+                    }
+                    dict[guess[j]]--;
+                }
+
+                i++;
+                j++;
+            }
+            StringBuilder sb = new StringBuilder();
+            sb.Append(bulls + "A" + cows + "B");
+            return sb.ToString();
         }
 
         public ListNode AddTwoNumbers(ListNode l1, ListNode l2)
@@ -1109,6 +1238,42 @@ namespace DataStructuresAndAlgorithms
             return s.Substring((c - 1 - length) / 2, length);
         }
 
+        public int MaxSubArray(int[] a)
+        {
+            //[-2,1,-3,4,-1,2,1,-5,4], ans: 6
+            int tempMax = a[0], actualMax = a[0], i = 1;
+            while (i < a.Length)
+            {
+                tempMax = Math.Max(a[i], tempMax + a[i]);
+                if (tempMax > actualMax)
+                {
+                    actualMax = tempMax;
+                }
+                i++;
+            }
+            return actualMax;
+        }
+
+        public int MaxProduct(int[] nums)
+        {
+            if (nums.Length == 0) return 0;
+
+            int maxsofar = nums[0], minsofar = nums[0];
+            int result = maxsofar;
+            int i = 1;
+            while (i < nums.Length)
+            {
+                int curr = nums[i];
+                int temp = Math.Max(curr, Math.Max(curr * maxsofar, curr * minsofar));
+                minsofar = Math.Min(curr, Math.Min(curr * maxsofar, curr * minsofar));
+
+                maxsofar = temp;
+                result = Math.Max(maxsofar, result);
+                i++;
+            }
+            return result;
+        }
+
         public string Convert(string s, int numRows)
         {
             if (numRows == 1) return s;
@@ -1219,7 +1384,7 @@ namespace DataStructuresAndAlgorithms
             string[] M = new string[] { "", "M", "MM", "MMM", "MMMM" };
             return M[(num / 1000)] + C[(num % 1000) / 100] + X[(num % 100) / 10] + I[num % 10];
         }
-        
+
         public IList<string> LetterCombinations(string digits)
         {
             List<string> temp = new List<string>(); // ex: digits= "234"
@@ -1587,6 +1752,28 @@ namespace DataStructuresAndAlgorithms
                 }
             }
             return st.Pop();
+        }
+
+        public int[][] Merge(int[][] intervals)
+        {
+            Array.Sort(intervals, (a, b) => a[0].CompareTo(b[0]));
+
+            List<int[]> res = new List<int[]>();
+
+            foreach (var interval in intervals)
+            {
+                // b[0] <=a[1] then add a[0], b[1]
+                if (!res.Any() || res[res.Count - 1][1] < interval[0])
+                {
+                    res.Add(interval);
+                }
+                else
+                {
+                    //extend the [1] element of already in the list.
+                    res[res.Count - 1][1] = Math.Max(res[res.Count - 1][1], interval[1]);
+                }
+            }
+            return res.ToArray();
         }
 
         public string ReverseWords2(string s)
