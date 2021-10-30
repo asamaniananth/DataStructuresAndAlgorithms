@@ -47,6 +47,7 @@
     <Compile Include="AthenaHealth.cs" />
     <Compile Include="BFSLevelOrderTraversal.cs" />
     <Compile Include="BinaryTree.cs" />
+    <Compile Include="Chewy.cs" />
     <Compile Include="Dinosaur.cs" />
     <Compile Include="DoublyLinkedList.cs" />
     <Compile Include="FindingPrimeNumbers.cs" />

@@ -102,15 +102,15 @@ namespace DataStructuresAndAlgorithms
             for (int i = 0; i < _adj.Length; i++)
             {
                 _adj[i] = new List<int>();
-            }
-
-            bool[] visited = new bool[numCourses];
-            bool[] tempvisited = new bool[numCourses];
+            }            
 
             for (int i = 0; i < prerequisites.Length; i++)
             {
                 _adj[prerequisites[i][1]].Add(prerequisites[i][0]);
             }
+
+            bool[] visited = new bool[numCourses];
+            bool[] tempvisited = new bool[numCourses];
 
             for (int i = 0; i < numCourses; i++)
             {

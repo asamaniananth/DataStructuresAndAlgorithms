@@ -189,6 +189,7 @@ namespace DataStructuresAndAlgorithms
 
         public int LengthOfLongestSubstringTwoDistinct(string s)
         {
+            // with 2 distinct character, same as fruits problem.
             int left = 0, right = 0, res = 0;
 
             Dictionary<char, int> dict = new Dictionary<char, int>();
@@ -296,10 +297,28 @@ namespace DataStructuresAndAlgorithms
             BigInteger s = atoi(num2);
             BigInteger res = f * s;
             return res.ToString();
+        }        
+
+        public BigInteger atoi(string s)
+        {
+            BigInteger res = 0;
+            int i = 0;
+            while (i < s.Length)
+            {
+                if (!(s[i] - '0' >= 0 && s[i] - '0' <= 9)) return res;
+                //if(res > BigInteger.MaxValue/10 || (res ==BigInteger.MaxValue/10 && s[i]> BigInteger.MaxValue %10)){
+                //  return BigInteger.MaxValue;
+                //}
+                res = res * 10 + s[i] - '0';
+                i++;
+            }
+            return res;
         }
 
         public string FindReplaceString(string s, int[] indices, string[] sources, string[] targets)
         {
+            // https://leetcode.com/problems/find-and-replace-in-string/
+
             Dictionary<int, string> sDict = new Dictionary<int, string>();
             Dictionary<int, string> tDict = new Dictionary<int, string>();
 
@@ -324,22 +343,6 @@ namespace DataStructuresAndAlgorithms
             }
 
             return sb.ToString();
-        }
-
-        public BigInteger atoi(string s)
-        {
-            BigInteger res = 0;
-            int i = 0;
-            while (i < s.Length)
-            {
-                if (!(s[i] - '0' >= 0 && s[i] - '0' <= 9)) return res;
-                //if(res > BigInteger.MaxValue/10 || (res ==BigInteger.MaxValue/10 && s[i]> BigInteger.MaxValue %10)){
-                //  return BigInteger.MaxValue;
-                //}
-                res = res * 10 + s[i] - '0';
-                i++;
-            }
-            return res;
         }
 
         // l1: 1->2->4, 
@@ -380,6 +383,8 @@ namespace DataStructuresAndAlgorithms
 
         public IList<string> FindMissingRanges(int[] nums, int lower, int upper)
         {
+            //https://leetcode.com/problems/missing-ranges/
+
             List<string> res = new List<string>();
             int prev = lower - 1;
             int i = 0;
@@ -577,6 +582,27 @@ namespace DataStructuresAndAlgorithms
             return false;
         }
 
+        public ListNodeForCycle DetectCycle(ListNodeForCycle head)
+        {
+            if (head == null) return null;
+            ListNodeForCycle move2steps = head;
+            ListNodeForCycle move1step = head;
+            while (move2steps != null && move2steps.next != null)
+            {
+                move2steps = move2steps.next.next;
+                move1step = move1step.next;
+                if (move2steps == move1step) break;
+            }
+            if (move2steps == null || move1step == null) return null;
+            move1step = head;
+            while (move1step != move2steps)
+            {
+                move1step = move1step.next;
+                move2steps = move2steps.next;
+            }
+            return move1step;
+        }
+
         public ListNode RemoveElementFromLinkedList(ListNode head, int n)
         {
             if (head.val == n)
@@ -599,28 +625,7 @@ namespace DataStructuresAndAlgorithms
                 }
             }
             return head;
-        }
-
-        public ListNodeForCycle DetectCycle(ListNodeForCycle head)
-        {
-            if (head == null) return null;
-            ListNodeForCycle move2steps = head;
-            ListNodeForCycle move1step = head;
-            while (move2steps != null && move2steps.next != null)
-            {
-                move2steps = move2steps.next.next;
-                move1step = move1step.next;
-                if (move2steps == move1step) break;
-            }
-            if (move2steps == null || move1step == null) return null;
-            move1step = head;
-            while (move1step != move2steps)
-            {
-                move1step = move1step.next;
-                move2steps = move2steps.next;
-            }
-            return move1step;
-        }
+        }        
 
         public int MajorityElementInArray(int[] nums)
         {
@@ -844,6 +849,8 @@ namespace DataStructuresAndAlgorithms
 
         public TreeNode InvertTree(TreeNode root)
         {
+            //https://leetcode.com/problems/invert-binary-tree/
+
             if (root == null) return null;
             TreeNode left = root.left;
             root.left = InvertTree(root.right);
@@ -853,6 +860,7 @@ namespace DataStructuresAndAlgorithms
 
         public IList<int> FindDisappearedNumbersInArray(int[] nums)
         {
+            //https://leetcode.com/problems/find-all-numbers-disappeared-in-an-array/
             for (int i = 0; i < nums.Length; i++)
             {
                 int j = Math.Abs(nums[i]) - 1;
@@ -957,7 +965,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public bool CheckPossibilityToMakeNonDecreasingArrayByChangingOneElement(int[] nums)
-        {
+        { //https://leetcode.com/problems/non-decreasing-array/
             int count = 0, i = 0;
             while (i < nums.Length - 1)
             {
@@ -988,6 +996,7 @@ namespace DataStructuresAndAlgorithms
 
         public int FindLengthOfLCIS(int[] nums)
         {
+            // https://leetcode.com/problems/longest-increasing-subsequence/
             if (nums.Length == 0) return 0;
             int diff = 1, i = 1, length = 1;
             while (i < nums.Length)
@@ -1017,7 +1026,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public int CountCharacters(string[] words, string chars)
-        {
+        { //https://leetcode.com/problems/find-words-that-can-be-formed-by-characters/
             int charsLength = chars.Length;
             int result = 0;
             Dictionary<char, int> dictChar = new Dictionary<char, int>();
@@ -1166,7 +1175,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public int LengthOfLongestSubstring(string s)
-        {
+        { //https://leetcode.com/problems/longest-substring-without-repeating-characters/
             int right = 0, left = 0, maxLen = 0;
             HashSet<char> set = new HashSet<char>();
             while (right < s.Length)
@@ -1462,7 +1471,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public int Search(int[] nums, int target)
-        {
+        { //https://leetcode.com/problems/search-in-rotated-sorted-array/
             if ((nums.Length == 1) && (nums[0] == target)) return 0;
             int rotatedAt = FindRotatedAt(nums, 0, nums.Length - 1);
             if (rotatedAt == -1) return BinarySearchIn(nums, 0, nums.Length - 1, target);
@@ -1555,7 +1564,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public int[] SearchRange(int[] nums, int target)
-        {
+        { //https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/
             int[] result = new int[] { -1, -1 };
             if (nums.Length == 0 && target == 0) return result;
             SeearchRangeUsingBinarySearch(nums, 0, nums.Length - 1, target, result);
@@ -1701,7 +1710,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public int EvaluateReversePolishNotationOrPostFixNotation(string[] s)
-        {
+        { //https://leetcode.com/problems/evaluate-reverse-polish-notation/
             Stack<int> st = new Stack<int>();
             int temp;
             int op1;
@@ -1755,7 +1764,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public int[][] Merge(int[][] intervals)
-        {
+        { //https://leetcode.com/problems/merge-intervals/
             Array.Sort(intervals, (a, b) => a[0].CompareTo(b[0]));
 
             List<int[]> res = new List<int[]>();
@@ -1777,7 +1786,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public string ReverseWords2(string s)
-        {
+        { //https://leetcode.com/problems/reverse-words-in-a-string/
             StringBuilder sb = new StringBuilder();
             int j, i = 0;
             while (i < s.Length)
@@ -1802,7 +1811,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public string FractionToDecimal(int numerator, int denominator)
-        {
+        { //https://leetcode.com/problems/fraction-to-recurring-decimal/
             StringBuilder sb = new StringBuilder();
             long nume;
             long den;
@@ -1847,7 +1856,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public string FormLargestNumber(int[] nums)
-        {
+        { //https://leetcode.com/problems/largest-number/
             if (nums.Length == 0) return "0";
             string[] sarr = new string[nums.Length];
             sarr = nums.Select(x => x.ToString()).ToArray();
@@ -1904,7 +1913,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public int ClimbStairs(int n)
-        {
+        { //https://leetcode.com/problems/climbing-stairs/
             if (n == 0 || n == 1) return 1;
             int[] dp = new int[n + 1];
             dp[0] = 1;
@@ -1919,7 +1928,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public int NumJewelsInStones(string jewels, string stones)
-        {
+        { //https://leetcode.com/problems/jewels-and-stones/
             if (jewels == "" || stones == "") return 0;
             int count = 0;
             byte[] jewelAscii = Encoding.ASCII.GetBytes(jewels);
@@ -1932,7 +1941,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public string DefangIPaddr(string address)
-        {
+        { //https://leetcode.com/problems/defanging-an-ip-address/
             StringBuilder sb = new StringBuilder();
             int i = 0;
             while (i < address.Length)
@@ -1945,7 +1954,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public string RestoreString(string s, int[] indices)
-        {
+        { //https://leetcode.com/problems/shuffle-string/
             char[] r = new char[s.Length];
             int i = 0;
             foreach (int x in indices)
@@ -1957,7 +1966,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public string Interpret(string command)
-        {
+        { //https://leetcode.com/problems/goal-parser-interpretation/
             StringBuilder sb = new StringBuilder();
             int i = 0;
             while (i < command.Length)
@@ -1984,7 +1993,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public int[][] KClosest(int[][] points, int k)
-        {
+        { //https://leetcode.com/problems/k-closest-points-to-origin/
             //https://www.geeksforgeeks.org/find-k-closest-points-to-the-origin/
             int n = points.Length;
             int[] distance = new int[n];
@@ -2018,7 +2027,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public bool BackspaceCompare(string s, string t)
-        {
+        { //https://leetcode.com/problems/backspace-string-compare/
             string a = BackspaceCompareHelper(s);
             string b = BackspaceCompareHelper(t);
             return a == b;
@@ -2045,7 +2054,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public string SortSentence(string s)
-        {
+        { //https://leetcode.com/problems/sorting-the-sentence/
             Dictionary<int, string> dic = new Dictionary<int, string>();
             StringBuilder sb = new StringBuilder();
             string[] tokens = s.Split(' ');
@@ -2071,7 +2080,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public int NumDifferentIntegers(string word)
-        {
+        { //https://leetcode.com/problems/number-of-different-integers-in-a-string/
             HashSet<string> set = new HashSet<string>();
             string[] tokens = Regex.Replace(word, @"[a-z]+", " ").Split(' ');
             for (int i = 0; i < tokens.Length; i++)
@@ -2084,7 +2093,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public string DecodeString(string s)
-        {
+        { //https://leetcode.com/problems/decode-string/
             Stack<int> intSt = new Stack<int>();
             Stack<char> charSt = new Stack<char>();
             string result = "", temp = "";
@@ -2110,7 +2119,7 @@ namespace DataStructuresAndAlgorithms
                     }
                     else
                     {
-                        intSt.Push(1);
+                        intSt.Push(1); // important to consider
                         charSt.Push(s[i]);
                     }
                 }
@@ -2160,7 +2169,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public int LengthOfLastWord(string s)
-        {
+        { //https://leetcode.com/problems/length-of-last-word/
             if (string.IsNullOrEmpty(s)) return 0;
             string[] tokens = s.Trim().Split(' ');
             int n = tokens.Length;
@@ -2168,13 +2177,13 @@ namespace DataStructuresAndAlgorithms
         }
 
         public IList<int> PartitionLabels(string s) //ababcbacadefegdehijhklij
-        {
+        { //https://leetcode.com/problems/partition-labels/
             Dictionary<char, int> dic = new Dictionary<char, int>();
             int i = 0;
             while (i < s.Length)
             {
                 if (!dic.ContainsKey(s[i]))
-                    dic.Add(s[i], i);
+                    dic.Add(s[i], i); // store index.
                 else dic[s[i]] = i;
                 i++;
             }
@@ -2194,27 +2203,9 @@ namespace DataStructuresAndAlgorithms
             }
             return result;
         }
-
-        public bool CanFinishCourse(int numCourses, int[][] prerequisites)
-        {
-            Dictionary<int, int> dic = new Dictionary<int, int>();
-            int i = 0;
-            while (i < prerequisites.Length)
-            {
-                int j = 0;
-                if (!dic.ContainsKey(prerequisites[i][j]))
-                {
-                    if (dic.ContainsKey(prerequisites[i][j + 1]) && dic[prerequisites[i][j + 1]] == prerequisites[i][j]) return false;
-                    if (prerequisites[i][j] == prerequisites[i][j + 1]) return false;
-                    dic.Add(prerequisites[i][j], prerequisites[i][j + 1]);
-                }
-                i++;
-            }
-            return true;
-        }
-
-        public string MinWindow(string s, string t)
-        {
+        
+        public string MinWindow(string s, string t) // this is wrong answer
+        { //https://leetcode.com/problems/minimum-window-substring/
             StringBuilder sb = new StringBuilder();
             if (s.Length < t.Length) return sb.ToString();
             Dictionary<char, int> dic = StringToDictionary(t);
@@ -2304,7 +2295,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public IList<IList<string>> GroupAnagrams(string[] arr)
-        {
+        { //https://leetcode.com/problems/group-anagrams/
             List<IList<string>> output = new List<IList<string>>();
             List<string> result = new List<string>();
             if (arr.Length == 1)
@@ -2387,7 +2378,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public IList<IList<string>> GroupAnagrams2(string[] arr)
-        {
+        { //https://leetcode.com/problems/group-anagrams/
             List<IList<string>> output = new List<IList<string>>();
             Dictionary<string, List<string>> dict = new Dictionary<string, List<string>>();
             int i = 0;
@@ -2411,7 +2402,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public bool IsPalindromeStringWithOnlyAlphaNumericCharacters(string s)
-        {
+        { //https://leetcode.com/problems/valid-palindrome/
             //string a = Regex.Replace(s,@"[A-Za-z0-9]+","").ToLower();
             int head = 0, tail = s.Length - 1;
             while (head <= tail)
@@ -2438,7 +2429,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public int NumUniqueEmails(string[] e)
-        {
+        { //https://leetcode.com/problems/unique-email-addresses/
             int i = 0;
             //int res=0;
             HashSet<string> res = new HashSet<string>();
@@ -2458,7 +2449,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public string LicenseKeyFormatting(string s, int k)
-        {
+        { //https://leetcode.com/problems/license-key-formatting/
             s = s.Replace("-", "").ToUpper();
             StringBuilder sb = new StringBuilder();
             int i = s.Length;
