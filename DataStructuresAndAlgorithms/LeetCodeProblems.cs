@@ -115,6 +115,27 @@ namespace DataStructuresAndAlgorithms
             return result;
         }
 
+        public int[] PlusOne(int[] digits)
+        { //https://leetcode.com/problems/plus-one/
+            int i = digits.Length - 1;
+            while (i >= 0)
+            {
+                if (digits[i] == 9)
+                {
+                    digits[i] = 0;
+                }
+                else
+                {
+                    digits[i]++;
+                    return digits;
+                }
+                i--;
+            }
+            digits = new int[digits.Length + 1];
+            digits[0] = 1;
+            return digits;
+        }
+
         public int SumOfAllEvenNumbersInArray(int[] arr)
         {
             int sum = 0;
@@ -188,7 +209,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public int LengthOfLongestSubstringTwoDistinct(string s)
-        {
+        { //https://leetcode.com/problems/longest-substring-with-at-most-two-distinct-characters/   premium question
             // with 2 distinct character, same as fruits problem.
             int left = 0, right = 0, res = 0;
 
@@ -198,11 +219,11 @@ namespace DataStructuresAndAlgorithms
             {
                 if (!dict.ContainsKey(s[right]))
                 {
-                    dict.Add(s[right], right);
+                    dict.Add(s[right], right); // add index
                 }
                 else
                 {
-                    dict[s[right]] = right;
+                    dict[s[right]] = right; // update with last seen index
                 }
                 if (dict.Count > 2)
                 {
@@ -215,7 +236,7 @@ namespace DataStructuresAndAlgorithms
                         }
                     }
                     left = smallest + 1;
-                    dict.Remove(s[smallest]);
+                    dict.Remove(s[smallest]); // remove smallest index value
                 }
                 res = Math.Max(res, right - left + 1);
 
@@ -297,7 +318,7 @@ namespace DataStructuresAndAlgorithms
             BigInteger s = atoi(num2);
             BigInteger res = f * s;
             return res.ToString();
-        }        
+        }
 
         public BigInteger atoi(string s)
         {
@@ -461,6 +482,41 @@ namespace DataStructuresAndAlgorithms
             return result;
         }
 
+        public void NextPermutation(int[] nums)
+        { //https://leetcode.com/problems/next-permutation/submissions/
+            int i = nums.Length - 2;
+            while (i >= 0 && nums[i] >= nums[i + 1])
+            {
+                i--;
+            }
+            if (i >= 0)
+            {
+                int j = nums.Length - 1;
+                while (nums[j] <= nums[i])
+                {
+                    j--;
+                }
+                swap(nums, i, j);
+            }
+            reverse(nums, i + 1);
+        }
+        public void swap(int[] a, int i, int j)
+        {
+            int temp = a[i];
+            a[i] = a[j];
+            a[j] = temp;
+        }
+        public void reverse(int[] a, int i)
+        {
+            int j = a.Length - 1;
+            while (i < j)
+            {
+                swap(a, i, j);
+                i++;
+                j--;
+            }
+        }
+
         public int RemoveDuplicates(int[] nums)
         {
             int i = 0;
@@ -557,6 +613,61 @@ namespace DataStructuresAndAlgorithms
             }
         }
 
+        public void SetZeroes(int[][] matrix)
+        { //https://leetcode.com/problems/set-matrix-zeroes/solution/   wrong solution
+            int rowlen = matrix.Length;
+            int collen = matrix[0].Length;
+            bool rowflag = false;
+            bool colflag = false;
+            //1) Scan the first row and set a variable rowFlag to indicate whether 
+            //   we need to set all 1s in first row or not. 
+            // 2) Scan the first column and set a variable colFlag to indicate whether 
+            //      we need to set all 1s in first column or not. 
+            for (int i = 0; i < rowlen; i++)
+            {
+                for (int j = 0; j < collen; j++)
+                {
+                    if (i == 0 && matrix[i][j] == 0)
+                    {
+                        rowflag = true;
+                    }
+                    if (j == 0 && matrix[i][j] == 0)
+                    {
+                        colflag = true;
+                    }
+                }
+            }
+
+            //3) Use first row and first column as the auxiliary arrays row[] and col[]             
+            //   respectively, consider the matrix as submatrix starting from second row and second column and apply method 1. 
+            for (int i = 1; i < rowlen; i++)
+            {
+                for (int j = 1; j < collen; j++)
+                {
+                    if (matrix[0][j] == 0 || matrix[i][0] == 0)
+                    {
+                        matrix[i][j] = 0;
+                    }
+                }
+            }
+            // 4) Finally, using rowFlag and colFlag, update first row and first column if needed.
+            if (rowflag == true)
+            {
+                for (int j = 0; j < collen; j++)
+                {
+                    matrix[0][j] = 0;
+                }
+            }
+
+            if (colflag == true)
+            {
+                for (int i = 0; i < rowlen; i++)
+                {
+                    matrix[i][0] = 0;
+                }
+            }
+        }
+
         public class ListNodeForCycle
         {
             public int val;
@@ -625,7 +736,7 @@ namespace DataStructuresAndAlgorithms
                 }
             }
             return head;
-        }        
+        }
 
         public int MajorityElementInArray(int[] nums)
         {
@@ -911,6 +1022,38 @@ namespace DataStructuresAndAlgorithms
             return sb.ToString();
         }
 
+        public void ReverseWords(char[] s)
+        { //https://leetcode.com/problems/reverse-words-in-a-string-ii/ - premium question
+            //s = ["t","h","e"," ","s","k","y"," ","i","s"," ","b","l","u","e"]
+            //s = ["e","u","l","b"," ","s","i"," ","y","k","s"," ","e","h","t"]
+            int right = s.Length - 1, left = 0;
+            ReverseWordhelper(s, left, right);
+            left = 0;
+            right = 0;
+            while (left < s.Length)
+            {
+                while (right < s.Length && s[right] != ' ')
+                {
+                    right++;
+                }
+                ReverseWordhelper(s, left, right - 1);
+                left = right + 1;
+                right = right + 1;
+            }
+
+        }
+        public void ReverseWordhelper(char[] s, int left, int right)
+        {
+            while (left <= right)
+            {
+                char temp = s[right];
+                s[right] = s[left];
+                s[left] = temp;
+                left++;
+                right--;
+            }
+        }
+
         public IList<int> Preorder(Node root)
         {
             List<int> result = new List<int>();
@@ -1174,6 +1317,81 @@ namespace DataStructuresAndAlgorithms
             return head;
         }
 
+        public ListNode ReverseList(ListNode head)
+        { //https://leetcode.com/problems/reverse-linked-list/
+            ListNode prev = null, curr = head, next = null;
+            while (curr != null)
+            {
+                next = curr.next;
+                curr.next = prev;
+                prev = curr;
+                curr = next;
+            }
+            return prev;
+        }
+
+        public ListNode MergeKLists(ListNode[] lists)
+        { //https://leetcode.com/problems/merge-k-sorted-lists/
+            if (lists.Length == 0) return null;
+            if (lists.Length < 2) return lists[0];
+            ListNode temp = new ListNode();
+            temp = Merge2Lists(lists[0], lists[1]);
+
+            int i = 2;
+            while (i < lists.Length)
+            {
+                temp = Merge2Lists(temp, lists[i]);
+                i++;
+            }
+
+            return temp;
+        }
+
+        public ListNode Merge2Lists(ListNode l1, ListNode l2)
+        {
+            ListNode dummy = new ListNode();
+            ListNode result = dummy;
+            while (l1 != null && l2 != null)
+            {
+                if (l1.val <= l2.val)
+                {
+                    result.next = l1;
+                    l1 = l1.next;
+                }
+                else
+                {
+                    result.next = l2;
+                    l2 = l2.next;
+                }
+                result = result.next;
+            }
+            while (l1 != null)
+            {
+                result.next = l1;
+                l1 = l1.next;
+                result = result.next;
+            }
+            while (l2 != null)
+            {
+                result.next = l2;
+                l2 = l2.next;
+                result = result.next;
+            }
+            return dummy.next;
+        }
+
+        public ListNode GetIntersectionNode(ListNode headA, ListNode headB)
+        { //https://leetcode.com/problems/intersection-of-two-linked-lists/submissions/
+            ListNode pA = headA;
+            ListNode pB = headB;
+            while (pA != pB)
+            {
+                pA = pA == null ? headB : pA.next;
+                pB = pB == null ? headA : pB.next;
+            }
+            return pB;
+        }
+
         public int LengthOfLongestSubstring(string s)
         { //https://leetcode.com/problems/longest-substring-without-repeating-characters/
             int right = 0, left = 0, maxLen = 0;
@@ -1248,7 +1466,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public int MaxSubArray(int[] a)
-        {
+        { //https://leetcode.com/problems/maximum-subarray/
             //[-2,1,-3,4,-1,2,1,-5,4], ans: 6
             int tempMax = a[0], actualMax = a[0], i = 1;
             while (i < a.Length)
@@ -1395,7 +1613,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public IList<string> LetterCombinations(string digits)
-        {
+        { //https://leetcode.com/problems/letter-combinations-of-a-phone-number/
             List<string> temp = new List<string>(); // ex: digits= "234"
             if (digits.Length == 0) return temp;
             Dictionary<int, List<string>> dict = new Dictionary<int, List<string>>
@@ -2046,7 +2264,6 @@ namespace DataStructuresAndAlgorithms
                 else if (st.Count > 0)
                 {
                     st.Pop();
-
                 }
                 i++;
             }
@@ -2203,7 +2420,7 @@ namespace DataStructuresAndAlgorithms
             }
             return result;
         }
-        
+
         public string MinWindow(string s, string t) // this is wrong answer
         { //https://leetcode.com/problems/minimum-window-substring/
             StringBuilder sb = new StringBuilder();
@@ -2464,8 +2681,118 @@ namespace DataStructuresAndAlgorithms
             return sb.ToString();
         }
 
+        public IList<int> RightSideView(TreeNode root)
+        { //https://leetcode.com/problems/binary-tree-right-side-view/
+            Queue<TreeNode> q = new Queue<TreeNode>();
+            if (root != null)
+            {
+                q.Enqueue(root);
+            }
+            List<int> li = new List<int>();
+            while (q.Count > 0)
+            {
+                int size = q.Count;
+                for (int i = 1; i <= size; i++)
+                {
+                    TreeNode temp = q.Dequeue();
+                    if (temp.left != null)
+                        q.Enqueue(temp.left);
+                    if (temp.right != null)
+                        q.Enqueue(temp.right);
+                    if (i == size) li.Add(temp.val);
+                }
+            }
+            return li;
+        }
+
     }
 
+    #region Diameter of Tree
+    public class Solution
+    {
+        int dia = 0;
+        public int DiameterOfBinaryTree(TreeNode root)
+        {
+            height(root);
+            return dia;
+        }
+
+        public int height(TreeNode root)
+        {
+            if (root == null) return 0;
+            int leftH = height(root.left);
+            int rightH = height(root.right);
+
+            dia = Math.Max(dia, leftH + rightH);
+            return Math.Max(leftH, rightH) + 1;
+        }
+    }
+    #endregion
+
+    #region LinkedList random pointer
+    public class RandomListNode
+    {
+        public int val;
+        public RandomListNode next;
+        public RandomListNode random;
+
+        public RandomListNode(int _val)
+        {
+            val = _val;
+            next = null;
+            random = null;
+        }
+    }
+    public class LinkedListRandomList
+    { //https://leetcode.com/problems/copy-list-with-random-pointer/
+        Dictionary<RandomListNode, RandomListNode> visited = new Dictionary<RandomListNode, RandomListNode>();
+
+        public RandomListNode CopyRandomList(RandomListNode head)
+        {
+            if (head == null)
+            {
+                return null;
+            }
+            if (visited.ContainsKey(head))
+            {
+                return visited[head];
+            }
+
+            RandomListNode newNode = new RandomListNode(head.val);
+
+            visited.Add(head, newNode);
+
+            newNode.next = CopyRandomList(head.next);
+            newNode.random = CopyRandomList(head.random);
+
+            return newNode;
+        }
+    }
+    #endregion
+
+    #region Max path sum
+    public class MaxPathSumClass
+    { //https://leetcode.com/problems/binary-tree-maximum-path-sum/
+        int result = int.MinValue;
+        public int MaxPathSum(TreeNode root)
+        {
+            maxUtil(root);
+            return result;
+        }
+
+        public int maxUtil(TreeNode root)
+        {
+            if (root == null) return 0;
+
+            int l = Math.Max(maxUtil(root.left), 0);
+            int r = Math.Max(maxUtil(root.right), 0);
+
+            result = Math.Max(result, l + r + root.val);
+
+            return root.val + Math.Max(l, r);
+        }
+    }
+    #endregion
 
     #region ListNode
     public class ListNode

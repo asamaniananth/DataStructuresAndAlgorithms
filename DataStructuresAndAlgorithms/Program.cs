@@ -162,7 +162,7 @@ namespace DataStructuresAndAlgorithms
             //leetCodeProblems.SortSentence("is2 sentence4 This1 a3");
             //leetCodeProblems.NumDifferentIntegers("a123bc34d8ef34");
             //leetCodeProblems.LengthOfLastWord("a ");
-            var output = leetCodeProblems.PartitionLabels("ababcbacadefegdehijhklij");
+            // var output = leetCodeProblems.PartitionLabels("ababcbacadefegdehijhklij");
             //string output= leetCodeProblems.MinWindow("ADOBECODEBANC", "ABC");
             //var output = leetCodeProblems.GroupAnagrams2(new string[] { "eat", "tea", "tan", "ate", "nat", "bat" });
             //var output = Regex.Replace("A man, a plan, 987 a canal: Panama", @"[A-Za-z,]+","");
@@ -185,6 +185,11 @@ namespace DataStructuresAndAlgorithms
             //ChewyClass chewyobj = new ChewyClass();
             //var output = chewyobj.SumPrime(33, 3, new Dictionary<string, bool>());
             //var output = leetCodeProblems.FormLargestNumber(new int[] { 10, 2 });
+            int[][] jArray = new int[3][]{ new int[3]{1,1,1},
+                                           new int[3]{ 1,0,1},
+                                           new int[3]{1,1,1}
+                                         };
+            leetCodeProblems.SetZeroes(jArray);
 
             #endregion
 
