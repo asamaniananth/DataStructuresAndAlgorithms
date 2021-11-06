@@ -189,7 +189,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public string LongestCommonPrefix(string[] strs)
-        {
+        { //https://leetcode.com/problems/longest-common-prefix/
             string longest = "";
             if (strs.Length == 0 || strs == null) return longest;
             string firstWord = strs[0];
@@ -518,7 +518,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public int RemoveDuplicates(int[] nums)
-        {
+        { //https://leetcode.com/problems/remove-duplicates-from-sorted-array/
             int i = 0;
             int j = i + 1;
             if (nums.Length == 0) return i;
@@ -535,23 +535,28 @@ namespace DataStructuresAndAlgorithms
         }
 
         public int RemoveElement(int[] nums, int val)
-        {
-            int lastIndex = nums.Length - 1;
+        { //https://leetcode.com/problems/remove-element/
+            int length = nums.Length;
             int i = 0;
-            while (i < nums.Length)
+            if (nums.Length == 0 || nums == null) return 0;
+            if (nums.Length == 1 && nums[i] == val) return 0;
+            while (i < length)
             {
                 if (nums[i] == val)
                 {
-                    nums[i] = nums[lastIndex];
-                    lastIndex--;
+                    nums[i] = nums[length - 1];
+                    length--;
                 }
-                i++;
+                else
+                {
+                    i++;
+                }
             }
-            return lastIndex + 1;
+            return length;
         }
 
         public int SearchInsert(int[] nums, int target)
-        {
+        { // https://leetcode.com/problems/search-insert-position/
             int start = 0, end = nums.Length - 1;
             while (start < end)
             {
@@ -569,7 +574,7 @@ namespace DataStructuresAndAlgorithms
                     start = middle + 1;
                 }
             }
-            return (target <= nums[start]) ? start : start + 1;
+            return (target == nums[start]) ? start : (target < nums[start]) ? start : start + 1;
         }
 
         public void RotateMatrixBy90(int[][] matrix)
@@ -808,7 +813,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public bool IsAnagram(string s, string t)
-        {
+        { //https://leetcode.com/problems/valid-anagram/
             if (s.Length != t.Length) return false;
             Dictionary<char, int> letterCount = new Dictionary<char, int>();
             for (int i = 0; i < s.Length; i++)
@@ -899,7 +904,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public void RotateArray(int[] nums, int k)
-        {
+        { //https://leetcode.com/problems/rotate-array/
             k = k % nums.Length;
             Reverse(nums, 0, nums.Length - 1);
             Reverse(nums, 0, k);
@@ -1108,7 +1113,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public bool CheckPossibilityToMakeNonDecreasingArrayByChangingOneElement(int[] nums)
-        { //https://leetcode.com/problems/non-decreasing-array/
+        { //https://leetcode.com/problems/non-decreasing-array/ //4,2,1 | 4,2,3
             int count = 0, i = 0;
             while (i < nums.Length - 1)
             {
@@ -1139,7 +1144,7 @@ namespace DataStructuresAndAlgorithms
 
         public int FindLengthOfLCIS(int[] nums)
         {
-            // https://leetcode.com/problems/longest-increasing-subsequence/
+            // https://leetcode.com/problems/longest-increasing-subsequence/    wrong answer
             if (nums.Length == 0) return 0;
             int diff = 1, i = 1, length = 1;
             while (i < nums.Length)
@@ -1380,7 +1385,7 @@ namespace DataStructuresAndAlgorithms
             return dummy.next;
         }
 
-        public ListNode GetIntersectionNode(ListNode headA, ListNode headB)
+        public ListNode GetIntersectionNode(ListNode headA, ListNode headB) // Common ancestor problem.
         { //https://leetcode.com/problems/intersection-of-two-linked-lists/submissions/
             ListNode pA = headA;
             ListNode pB = headB;
@@ -1553,7 +1558,7 @@ namespace DataStructuresAndAlgorithms
             return result * sign;
         }
 
-        public int MyAtoi2(string s)
+        public int MyAtoi2(string s) // Not efficient solution.
         {
             if (String.IsNullOrWhiteSpace(s)) return 0;
             if (s.Length == 0)
@@ -1871,7 +1876,7 @@ namespace DataStructuresAndAlgorithms
             List<List<TreeNode>> listOfList = new List<List<TreeNode>>();
             CreateLevelOrderHelper(root, listOfList, 0);
             return listOfList;
-        }
+        } //Forget this
 
         public void CreateLevelOrderHelper(TreeNode root, List<List<TreeNode>> lol, int level)
         {
@@ -1889,30 +1894,7 @@ namespace DataStructuresAndAlgorithms
             list.Add(root);
             CreateLevelOrderHelper(root.left, lol, level + 1);
             CreateLevelOrderHelper(root.right, lol, level + 1);
-        }
-
-        public IList<IList<int>> LevelOrder(TreeNode root)
-        {
-            List<IList<int>> result = new List<IList<int>>();
-            Queue<TreeNode> current = new Queue<TreeNode>();
-            if (root != null)
-            {
-                current.Enqueue(root);
-            }
-            while (current.Count > 0)
-            {
-                List<int> level = new List<int>();
-                for (int i = 0; i < current.Count; i++)
-                {
-                    TreeNode node = current.Dequeue();
-                    level.Add(node.val);
-                    if (node.left != null) current.Enqueue(node.left);
-                    if (node.right != null) current.Enqueue(node.right);
-                }
-                result.Add(level);
-            }
-            return result;
-        }
+        }        
 
         public bool FindIfAappearsBeforeB(string S)
         {
@@ -2311,6 +2293,7 @@ namespace DataStructuresAndAlgorithms
 
         public string DecodeString(string s)
         { //https://leetcode.com/problems/decode-string/
+            //s = "3[a]2[bc]"
             Stack<int> intSt = new Stack<int>();
             Stack<char> charSt = new Stack<char>();
             string result = "", temp = "";
@@ -2511,7 +2494,7 @@ namespace DataStructuresAndAlgorithms
             return dic;
         }
 
-        public IList<IList<string>> GroupAnagrams(string[] arr)
+        public IList<IList<string>> GroupAnagrams(string[] arr) // Not efficient solution, look into GroupAnagrams2 sol.
         { //https://leetcode.com/problems/group-anagrams/
             List<IList<string>> output = new List<IList<string>>();
             List<string> result = new List<string>();
@@ -2857,6 +2840,118 @@ namespace DataStructuresAndAlgorithms
         }
     }
 
+    //Inorder - preorder - postorder
+    public class BinaryTreeDFS
+    {
+        List<int> result = new List<int>();
+        public IList<int> InorderTraversal(TreeNode root)
+        {
+            InorderUtil(root);
+            return result;
+        }
+        public void InorderUtil(TreeNode root)
+        {
+            if (root == null) return;
+            if (root.left != null)
+            {
+                InorderUtil(root.left);
+            }
+            result.Add(root.val);
+            if (root.right != null)
+            {
+                InorderUtil(root.right);
+            }
+        }
+    }
+
+    public class BinaryTreeBFS
+    {
+        public IList<IList<int>> LevelOrder(TreeNode root)
+        {
+            List<IList<int>> res = new List<IList<int>>();
+            Queue<TreeNode> q = new Queue<TreeNode>();
+            if (root != null) q.Enqueue(root);
+
+            while (q.Count > 0)
+            {
+                List<int> level = new List<int>();
+                int i = 0;
+                int size = q.Count;
+                while (i < size)
+                {
+                    TreeNode temp = q.Dequeue();
+                    level.Add(temp.val);
+                    if (temp.left != null)
+                    {
+                        q.Enqueue(temp.left);
+                    }
+                    if (temp.right != null)
+                    {
+                        q.Enqueue(temp.right);
+                    }
+                    i++;
+                }
+                res.Add(level);
+
+            }
+            return res;
+        }
+
+        public IList<IList<int>> ZigzagLevelOrder(TreeNode root)
+        { //https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/
+            List<IList<int>> res = new List<IList<int>>();
+
+            bool leftToRight = true;
+            Stack<TreeNode> currentLevel = new Stack<TreeNode>();
+            Stack<TreeNode> nextLevel = new Stack<TreeNode>();
+            if (root != null)
+            {
+                currentLevel.Push(root);
+            }
+            List<int> level = new List<int>();
+            while (currentLevel.Count > 0)
+            {
+                TreeNode node = currentLevel.Pop();
+
+                level.Add(node.val);
+                if (leftToRight)
+                {
+                    if (node.left != null)
+                    {
+                        nextLevel.Push(node.left);
+                    }
+                    if (node.right != null)
+                    {
+                        nextLevel.Push(node.right);
+                    }
+                }
+                else
+                {
+                    if (node.right != null)
+                    {
+                        nextLevel.Push(node.right);
+                    }
+                    if (node.left != null)
+                    {
+                        nextLevel.Push(node.left);
+                    }
+                }
+
+                if (currentLevel.Count == 0)
+                {
+                    res.Add(level);
+                    leftToRight = !leftToRight;
+                    Stack<TreeNode> temp = currentLevel;
+                    currentLevel = nextLevel;
+                    nextLevel = temp;
+                    level = new List<int>();
+                }
+
+            }
+            return res;
+        }
+    }
+
     public class Node
     {
         public int val;
@@ -3064,14 +3159,15 @@ namespace DataStructuresAndAlgorithms
     #region
     public class IsValidBSTClass
     {
-        int lastVal;
+        int? lastVal=null;
         public bool IsValidBST(TreeNode root)
         {
             if (root == null) return true;
 
             if (!IsValidBST(root.left)) return false;
 
-            if (root.val <= lastVal) return false;
+            if (lastVal != null &&root.val <= lastVal) return false; // ex: if root value is lessthan left value return false
+
             lastVal = root.val;
 
             if (!IsValidBST(root.right)) return false;

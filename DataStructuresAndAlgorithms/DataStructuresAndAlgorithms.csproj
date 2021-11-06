@@ -52,7 +52,9 @@
     <Compile Include="DoublyLinkedList.cs" />
     <Compile Include="FindingPrimeNumbers.cs" />
     <Compile Include="FindingSubstring.cs" />
+    <Compile Include="Google3rdNov2021.cs" />
     <Compile Include="Graphs.cs" />
+    <Compile Include="Gusto5thNovember2021.cs" />
     <Compile Include="HashTable.Array.cs" />
     <Compile Include="HashTable.ArrayNode.cs" />
     <Compile Include="HashTable.cs" />
