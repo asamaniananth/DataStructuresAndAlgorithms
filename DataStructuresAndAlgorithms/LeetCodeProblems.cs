@@ -1894,7 +1894,7 @@ namespace DataStructuresAndAlgorithms
             list.Add(root);
             CreateLevelOrderHelper(root.left, lol, level + 1);
             CreateLevelOrderHelper(root.right, lol, level + 1);
-        }        
+        }
 
         public bool FindIfAappearsBeforeB(string S)
         {
@@ -2383,7 +2383,7 @@ namespace DataStructuresAndAlgorithms
             while (i < s.Length)
             {
                 if (!dic.ContainsKey(s[i]))
-                    dic.Add(s[i], i); // store index.
+                    dic.Add(s[i], i); // store last seen index.
                 else dic[s[i]] = i;
                 i++;
             }
@@ -3159,14 +3159,14 @@ namespace DataStructuresAndAlgorithms
     #region
     public class IsValidBSTClass
     {
-        int? lastVal=null;
+        int? lastVal = null;
         public bool IsValidBST(TreeNode root)
         {
             if (root == null) return true;
 
             if (!IsValidBST(root.left)) return false;
 
-            if (lastVal != null &&root.val <= lastVal) return false; // ex: if root value is lessthan left value return false
+            if (lastVal != null && root.val <= lastVal) return false; // ex: if root value is lessthan left value return false
 
             lastVal = root.val;
 

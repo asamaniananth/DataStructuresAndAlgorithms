@@ -61,6 +61,7 @@
     <Compile Include="HashTableNodePair.cs" />
     <Compile Include="LeetCodeProblems.cs" />
     <Compile Include="LinkedList.cs" />
+    <Compile Include="Microsoft5thNov2021.cs" />
     <Compile Include="PriorityQueue.List.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
