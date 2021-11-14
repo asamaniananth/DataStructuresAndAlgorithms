@@ -209,4 +209,64 @@ namespace DataStructuresAndAlgorithms
             return topSort.ToArray();
         }
     }
+
+    public class CloneNode
+    {
+        #region Node class
+        public int val;
+        public IList<CloneNode> neighbors;
+
+        public CloneNode()
+        {
+            val = 0;
+            neighbors = new List<CloneNode>();
+        }
+
+        public CloneNode(int _val)
+        {
+            val = _val;
+            neighbors = new List<CloneNode>();
+        }
+
+        public CloneNode(int _val, List<CloneNode> _neighbors)
+        {
+            val = _val;
+            neighbors = _neighbors;
+        }
+        #endregion
+
+        public CloneNode CloneGraph(CloneNode node)
+        { //https://leetcode.com/problems/clone-graph/
+            if (node == null) return null;
+            Dictionary<CloneNode, CloneNode> dict = new Dictionary<CloneNode, CloneNode>();
+            Queue<CloneNode> q = new Queue<CloneNode>();
+
+            CloneNode cloned = new CloneNode(node.val);
+            q.Enqueue(node);
+            dict.Add(node, cloned);
+
+            while (q.Count > 0)
+            {
+                CloneNode temp = q.Dequeue();
+
+                foreach (var x in temp.neighbors)
+                {
+                    if (!dict.ContainsKey(x))
+                    {
+                        q.Enqueue(x);
+                        cloned = new CloneNode(x.val);
+
+                        dict.Add(x, cloned);
+
+                        dict[temp].neighbors.Add(cloned);
+                    }
+                    else
+                    {
+                        dict[temp].neighbors.Add(dict[x]);
+                    }
+                }
+            }
+            return dict[node];
+        }
+    }
 }

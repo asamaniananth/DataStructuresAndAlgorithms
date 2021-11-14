@@ -102,6 +102,54 @@ namespace DataStructuresAndAlgorithms
             return reverse;
         }
 
+        public bool IsPowerOfFour(int n)
+        { //https://leetcode.com/problems/power-of-four/
+            if (n == 0) return false;
+            while (n != 1)
+            {
+                if (n % 4 != 0)
+                {
+                    return false;
+                }
+                n = n / 4;
+            }
+            return true;
+        }
+
+        public int[] Intersection(int[] nums1, int[] nums2)
+        { //https://leetcode.com/problems/intersection-of-two-arrays/
+            HashSet<int> set1 = new HashSet<int>();
+            foreach (int x in nums1)
+            {
+                set1.Add(x);
+            }
+            HashSet<int> set2 = new HashSet<int>();
+            foreach (int x in nums2)
+            {
+                set2.Add(x);
+            }
+            if (nums1.Length > nums2.Length)
+            {
+                return IntersectionUtil(set1, set2);
+            }
+            else
+            {
+                return IntersectionUtil(set2, set1);
+            }
+        }
+        public int[] IntersectionUtil(HashSet<int> set1, HashSet<int> set2)
+        {
+            List<int> res = new List<int>();
+            foreach (var x in set2)
+            {
+                if (set1.Contains(x))
+                {
+                    res.Add(x);
+                }
+            }
+            return res.ToArray();
+        }
+
         public int Fibonacci(int n)
         {
             if (n <= 1) return n;
@@ -2950,8 +2998,116 @@ namespace DataStructuresAndAlgorithms
             }
             return res;
         }
+
+        public TreeNode LowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q)
+        { //https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/
+            int pval = p.val;
+            int qval = q.val;
+            TreeNode node = root;
+            while (node != null)
+            {
+                int parentval = node.val;
+                if (pval > parentval && q.val > parentval)
+                {
+                    node = node.right;
+                }
+                else if (pval < parentval && q.val < parentval)
+                {
+                    node = node.left;
+                }
+                else
+                {
+                    return node;
+                }
+            }
+            return node;
+        } // Binary Search Tree
+
+        public TreeNode LowestCommonAncestorBinaryTree(TreeNode root, TreeNode p, TreeNode q) //Binary Tree
+        { // https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/
+            // https://www.geeksforgeeks.org/lowest-common-ancestor-binary-tree-set-1/ method 2
+            if (root == null) return null;
+            if (root == p || root == q) return root;
+            TreeNode left = LowestCommonAncestorBinaryTree(root.left, p, q);
+            TreeNode right = LowestCommonAncestorBinaryTree(root.right, p, q);
+
+            if (left != null && right != null) return root;
+            if (left == null && right == null) return null;
+            return left != null ? left : right;
+        }
+
+        #region Binary Tree easy method
+        public TreeNode res = null;
+        public TreeNode LowestCommonAncestorBinaryTree2(TreeNode root, TreeNode p, TreeNode q)
+        {
+            util(root, p, q);
+            return res;
+        }
+
+        public bool util(TreeNode root, TreeNode p, TreeNode q)
+        {
+            if (root == null)
+            {
+                return false;
+            }
+            int left = util(root.left, p, q) ? 1 : 0;
+            int right = util(root.right, p, q) ? 1 : 0;
+            int mid = (root == p || root == q) ? 1 : 0;
+            if (mid + left + right >= 2)
+            {
+                res = root;
+            }
+            return (mid + left + right > 0);
+        }
+        #endregion
     }
 
+    public class NodeNextPointer
+    {
+        public int val;
+        public NodeNextPointer left;
+        public NodeNextPointer right;
+        public NodeNextPointer next;
+
+        public NodeNextPointer() { }
+
+        public NodeNextPointer(int _val)
+        {
+            val = _val;
+        }
+
+        public NodeNextPointer(int _val, NodeNextPointer _left, NodeNextPointer _right, NodeNextPointer _next)
+        {
+            val = _val;
+            left = _left;
+            right = _right;
+            next = _next;
+        }
+
+        public NodeNextPointer Connect(NodeNextPointer root)
+        { // https://leetcode.com/problems/populating-next-right-pointers-in-each-node/
+            if (root == null) return root;
+            NodeNextPointer leftmost = root;
+            while (leftmost.left != null)
+            {
+                NodeNextPointer head = leftmost;
+                while (head != null)
+                {
+                    //connection 1
+                    head.left.next = head.right;
+                    //connection 2
+                    if (head.next != null)
+                    {
+                        head.right.next = head.next.left;
+                    }
+                    head = head.next;
+                }
+                leftmost = leftmost.left;
+            }
+            return root;
+        }
+    }
+    
     public class Node
     {
         public int val;
@@ -3102,7 +3258,7 @@ namespace DataStructuresAndAlgorithms
         int rootIndex;
 
         public TreeNode BinaryTreeFromInorderAndPostorder(int[] inorder, int[] postorder)
-        {
+        { //https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/
             for (int i = 0; i < inorder.Length - 1; i++)
             {
                 dic.Add(inorder[i], i);
@@ -3111,6 +3267,7 @@ namespace DataStructuresAndAlgorithms
             return BinaryTreeFromInorderAndPostorderUtil(inorder, postorder, 0, inorder.Length - 1);
         }
 
+        // Construct Binary Tree from Inorder and Postorder Traversal
         public TreeNode BinaryTreeFromInorderAndPostorderUtil(int[] inorder, int[] postorder, int inostart, int inoend)
         {
             if (inostart > inoend) return null;
@@ -3128,7 +3285,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public TreeNode BinaryTreeFromInorderAndPreorder(int[] inorder, int[] preorder)
-        {
+        { //https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
             for (int i = 0; i < inorder.Length; i++)
             {
                 dic.Add(inorder[i], i);
@@ -3137,7 +3294,8 @@ namespace DataStructuresAndAlgorithms
             return BinaryTreeFromInorderAndPreorderUtil(inorder, preorder, 0, inorder.Length - 1);
         }
 
-        public TreeNode BinaryTreeFromInorderAndPreorderUtil(int[] inorder, int[] preorder, int inostart, int inoend)
+        // BuildTree, Construct Binary Tree from Preorder and Inorder Traversal
+        public TreeNode BinaryTreeFromInorderAndPreorderUtil(int[] inorder, int[] preorder, int inostart, int inoend) 
         {
             if (inostart > inoend) return null;
             int curRoot = preorder[rootIndex];
