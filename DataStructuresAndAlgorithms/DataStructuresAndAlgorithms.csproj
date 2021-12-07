@@ -72,6 +72,7 @@
     <Compile Include="Stack.Array.cs" />
     <Compile Include="Stack.List.cs" />
     <Compile Include="TempClass.cs" />
+    <Compile Include="Upstart16thNov2021.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

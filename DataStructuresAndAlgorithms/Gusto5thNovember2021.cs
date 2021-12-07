@@ -75,7 +75,7 @@ namespace DataStructuresAndAlgorithms
             return !inLeftOnly.Concat(inRightOnly).Any();
         }
 
-        public static void Main()
+        public static void GustoFunction()
         {
             // Example 1
             int amount_1 = 40;

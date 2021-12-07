@@ -236,6 +236,15 @@ namespace DataStructuresAndAlgorithms
             return total = total + pair[s[s.Length - 1]];
         }
 
+        public string IntToRoman(int num)
+        {
+            string[] I = new string[] { "", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX" };
+            string[] X = new string[] { "", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC" };
+            string[] C = new string[] { "", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM" };
+            string[] M = new string[] { "", "M", "MM", "MMM", "MMMM" };
+            return M[(num / 1000)] + C[(num % 1000) / 100] + X[(num % 100) / 10] + I[num % 10];
+        }
+
         public string LongestCommonPrefix(string[] strs)
         { //https://leetcode.com/problems/longest-common-prefix/
             string longest = "";
@@ -721,6 +730,112 @@ namespace DataStructuresAndAlgorithms
             }
         }
 
+        public string SimplifyPath2(string s) // Doesn't cover all the edge cases, see next solution.
+        {
+            string[] carr = s.Split('/');
+            StringBuilder sb = new StringBuilder();
+            if (carr.Length == 1)
+            {
+                sb.Insert(0, carr[0]);
+                sb.Insert(0, "/");
+            }
+
+            int i = carr.Length - 1;
+            while (i >= 0)
+            {
+                int count = 0;
+                if (carr[i] == "..")
+                {
+                    while (carr[i] == "..")
+                    {
+                        i--;
+                        count++;
+                    }                    
+                    while (count > 0)
+                    {
+                        if (carr[i] == ".")
+                        {
+                            i--;
+                            continue;
+                        }
+                        else
+                        {
+                            i--;
+                            count--;
+                        }                        
+                    }
+                }
+                else if (carr[i] == "." || carr[i]=="")
+                {
+                    i--;
+                }
+                else
+                {
+                    if (i == 0)
+                    {
+                        sb.Insert(0, carr[i]);
+                    }
+                    else
+                    {
+                        sb.Insert(0, carr[i]);
+                        sb.Insert(0, "/");
+                    }
+                    i--;
+                }
+            }
+            return sb.ToString().Length == 0 ? "/" : sb.ToString();
+        }
+
+        public string SimplifyPath(string s)
+        { //https://leetcode.com/problems/simplify-path/
+            Stack<string> st = new Stack<string>();
+            string[] sarr = s.Split('/');
+
+            int i = 0;
+            while (i < sarr.Length)
+            {
+                if (sarr[i] == "." || sarr[i] == "")
+                {
+                    i++;
+                    continue;
+                }
+                else if (sarr[i] == "..")
+                {
+                    if (st.Count > 0)
+                    {
+                        st.Pop();
+                    }
+                }
+                else
+                {
+                    st.Push(sarr[i]);
+                }
+                i++;
+            }
+            StringBuilder sb = new StringBuilder();
+            foreach (var x in st)
+            {
+                sb.Insert(0, x);
+                sb.Insert(0, "/");
+            }
+            return (sb.ToString().Length == 0) ? "/" : sb.ToString();
+        }
+
+        public List<char> PrintFromCharToZ(char c)
+        {
+            List<char> res = new List<char>();
+            int cValue = (int)c; //98
+            int aDiffValue = cValue - 'a'; //98-97 =1
+            int zValue = cValue + 25 - aDiffValue; //98+25-1
+            int i = cValue;
+            while (i <= zValue)
+            {
+                res.Add((char)i);
+                i++;
+            }
+            return res; // will print b-z inclusive
+        }
+
         public class ListNodeForCycle
         {
             public int val;
@@ -931,7 +1046,6 @@ namespace DataStructuresAndAlgorithms
             }
             return nums1;
         }
-
 
         public TreeNode SortedArrayToBST(int[] nums)
         {
@@ -1554,7 +1668,7 @@ namespace DataStructuresAndAlgorithms
             return result;
         }
 
-        public string Convert(string s, int numRows)
+        public string Convert2(string s, int numRows)
         {
             if (numRows == 1) return s;
             int i = 0, k = 2 * numRows - 2;
@@ -1656,14 +1770,7 @@ namespace DataStructuresAndAlgorithms
             return area;
         }
 
-        public string IntToRoman(int num)
-        {
-            string[] I = new string[] { "", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX" };
-            string[] X = new string[] { "", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC" };
-            string[] C = new string[] { "", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM" };
-            string[] M = new string[] { "", "M", "MM", "MMM", "MMMM" };
-            return M[(num / 1000)] + C[(num % 1000) / 100] + X[(num % 100) / 10] + I[num % 10];
-        }
+        
 
         public IList<string> LetterCombinations(string digits)
         { //https://leetcode.com/problems/letter-combinations-of-a-phone-number/
@@ -1739,6 +1846,64 @@ namespace DataStructuresAndAlgorithms
             if (n > 0)
                 _printParenthesis(str, 0, n, 0, 0, result);
             return result;
+        }
+
+        public string ValidIPAddress(string ip)
+        {
+            string[] v4 = ip.Split('.');
+            string[] v6 = ip.Split(':');
+            if (v4.Length != 4 && v6.Length != 8)
+            {
+                return "Neither";
+            }
+            if (v4.Length == 4)
+            {
+                return checkv4Validity(v4);
+            }
+            else if (v6.Length == 8)
+            {
+                return checkv6Validity(v6);
+            }
+            else
+            {
+                return "Neither";
+            }
+        }
+
+        public string checkv4Validity(string[] v4)
+        {
+            foreach (string x in v4)
+            {
+                if (String.IsNullOrWhiteSpace(x) || x.Length == 0 || x.Length > 3) return "Neither";
+                if (x[0] == '0' && x.Length != 1) return "Neither";
+                try
+                {
+                    int temp = int.Parse(x);
+                    if (temp < 0 || temp > 255) return "Neither";
+                }
+                catch (Exception)
+                {
+                    return "Neither";
+                }
+            }
+            return "IPv4";
+        }
+
+        public string checkv6Validity(string[] v6)
+        {
+            foreach (string x in v6)
+            {
+                if (String.IsNullOrWhiteSpace(x) || x.Length == 0 || x.Length > 4) return "Neither";
+                try
+                {
+                    int temp = Convert.ToInt32(x, 16);
+                }
+                catch (Exception)
+                {
+                    return "Neither";
+                }
+            }
+            return "IPv6";
         }
 
         public int Search(int[] nums, int target)

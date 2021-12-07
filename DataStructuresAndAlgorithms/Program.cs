@@ -185,11 +185,14 @@ namespace DataStructuresAndAlgorithms
             //ChewyClass chewyobj = new ChewyClass();
             //var output = chewyobj.SumPrime(33, 3, new Dictionary<string, bool>());
             //var output = leetCodeProblems.FormLargestNumber(new int[] { 10, 2 });
-            int[][] jArray = new int[3][]{ new int[3]{1,1,1},
-                                           new int[3]{ 1,0,1},
-                                           new int[3]{1,1,1}
-                                         };
-            leetCodeProblems.SetZeroes(jArray);
+            //int[][] jArray = new int[3][]{ new int[3]{1,1,1},
+            //                               new int[3]{ 1,0,1},
+            //                               new int[3]{1,1,1}
+            //                             };
+            //leetCodeProblems.SetZeroes(jArray);
+            //var output = leetCodeProblems.SimplifyPath("/a/./b/../../c/");
+            //var output = leetCodeProblems.PrintFromCharToZ('b');
+            var output = leetCodeProblems.ValidIPAddress("1.0.1.");
 
             #endregion
 
