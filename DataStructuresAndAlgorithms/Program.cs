@@ -192,7 +192,8 @@ namespace DataStructuresAndAlgorithms
             //leetCodeProblems.SetZeroes(jArray);
             //var output = leetCodeProblems.SimplifyPath("/a/./b/../../c/");
             //var output = leetCodeProblems.PrintFromCharToZ('b');
-            var output = leetCodeProblems.ValidIPAddress("1.0.1.");
+            //var output = leetCodeProblems.ValidIPAddress("1.0.1.");
+            var output = leetCodeProblems.MostCommonWord("a, a, a, a, b,b,b,c, c", new string[] { "a" });
 
             #endregion
 

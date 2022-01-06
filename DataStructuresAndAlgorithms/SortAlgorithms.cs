@@ -345,8 +345,8 @@ namespace DataStructuresAndAlgorithms
         public void MinHeapSort(int[] A)
         {
             int length = A.Length;
-            BuildMinHeap(A, length);
-            for (int i = length - 1; i >= 0; i--)
+            BuildMinHeap(A, length); // 1. Build minheap
+            for (int i = length - 1; i >= 0; i--) // 2. Delete part
             {
                 Exchange(A, 0, i);
                 MinHeapify(A, 0, i);

@@ -44,8 +44,31 @@ namespace DataStructuresAndAlgorithms
             #endregion
         }
 
+        public int[] TwoSumII(int[] nums, int target)
+        { //https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/
+            int start = 0, end = nums.Length - 1;
+
+            while (start < end)
+            {
+                int tot = nums[start] + nums[end];
+                if (tot == target)
+                {
+                    return new int[] { start + 1, end + 1 };
+                }
+                else if (tot < target)
+                {
+                    start++;
+                }
+                else
+                {
+                    end--;
+                }
+            }
+            return new int[] { -1, -1 };
+        }
+
         public IList<IList<int>> ThreeSum(int[] arr)
-        {
+        { //https://leetcode.com/problems/3sum/
             //[-4,-1,-1,0,1,2]
             //[[-1,-1,2],[-1,0,1]]
             List<IList<int>> res = new List<IList<int>>();
@@ -540,7 +563,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public void NextPermutation(int[] nums)
-        { //https://leetcode.com/problems/next-permutation/submissions/
+        { //https://leetcode.com/problems/next-permutation/
             int i = nums.Length - 2;
             while (i >= 0 && nums[i] >= nums[i + 1])
             {
@@ -572,6 +595,59 @@ namespace DataStructuresAndAlgorithms
                 i++;
                 j--;
             }
+        }
+
+        public string MostCommonWord(string para, string[] banned) // one case failed
+        { //https://leetcode.com/problems/most-common-word/
+            StringBuilder sb = new StringBuilder();
+            int i = 0;
+            while (i < para.Length)
+            {
+                if (!char.IsPunctuation(para[i]))
+                {
+                    sb.Append(para[i]);                    
+                }                
+                i++;
+            }
+
+            string newp = sb.ToString().ToLower();
+            string[] tokens = newp.Split(' ');
+            Dictionary<string, int> dict = new Dictionary<string, int>();
+
+            i = 0;
+            while (i < tokens.Length)
+            {
+                if (!dict.ContainsKey(tokens[i]))
+                {
+                    dict.Add(tokens[i], 1);
+                }
+                else
+                {
+                    dict[tokens[i]]++;
+                }
+                i++;
+            }
+
+            HashSet<string> set = new HashSet<string>();
+            i = 0;
+            while (i < banned.Length)
+            {
+                set.Add(banned[i]);
+                i++;
+            }
+
+            string result = string.Empty;
+            int max = int.MinValue;
+
+            foreach (var kvp in dict)
+            {
+                if (kvp.Value > max && !set.Contains(kvp.Key))
+                {
+                    result = kvp.Key;
+                    max = kvp.Value;
+                }
+            }
+            return result;
         }
 
         public int RemoveDuplicates(int[] nums)
@@ -750,7 +826,7 @@ namespace DataStructuresAndAlgorithms
                     {
                         i--;
                         count++;
-                    }                    
+                    }
                     while (count > 0)
                     {
                         if (carr[i] == ".")
@@ -762,10 +838,10 @@ namespace DataStructuresAndAlgorithms
                         {
                             i--;
                             count--;
-                        }                        
+                        }
                     }
                 }
-                else if (carr[i] == "." || carr[i]=="")
+                else if (carr[i] == "." || carr[i] == "")
                 {
                     i--;
                 }
@@ -1101,7 +1177,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public bool IsStrobogrammatic(string num)
-        {
+        { //https://leetcode.com/problems/strobogrammatic-number/
             Dictionary<char, char> dict = new Dictionary<char, char>{
                                                                         {'0','0'},
                                                                         {'1','1'},
@@ -1134,6 +1210,34 @@ namespace DataStructuresAndAlgorithms
             root.left = InvertTree(root.right);
             root.right = InvertTree(left);
             return root;
+        }
+
+        public int FirstUniqChar(string s)
+        { //https://leetcode.com/problems/first-unique-character-in-a-string/
+            Dictionary<char, int> dict = new Dictionary<char, int>();
+            int i = 0;
+            while (i < s.Length)
+            {
+                if (!dict.ContainsKey(s[i]))
+                {
+                    dict.Add(s[i], 1);
+                }
+                else
+                {
+                    dict[s[i]]++;
+                }
+                i++;
+            }
+            i = 0;
+            while (i < s.Length)
+            {
+                if (dict[s[i]] == 1)
+                {
+                    return i;
+                }
+                i++;
+            }
+            return -1;
         }
 
         public IList<int> FindDisappearedNumbersInArray(int[] nums)
@@ -1177,7 +1281,7 @@ namespace DataStructuresAndAlgorithms
                 sb.Append(" ");
             }
             return sb.ToString().Trim();
-        }
+        }        
 
         public string reverseString(string s)
         {
@@ -1187,6 +1291,61 @@ namespace DataStructuresAndAlgorithms
                 sb.Append(s[i]);
             }
             return sb.ToString();
+        }
+
+        public int StrStr(string s, string t)
+        { //https://leetcode.com/problems/implement-strstr/
+            if (string.IsNullOrEmpty(s) && string.IsNullOrEmpty(t)) return 0;
+
+            if (s.Contains(t))
+            {
+                return s.IndexOf(t);
+            }
+            else return -1;
+        }
+
+        public int CompareVersion(string s, string t)
+        { // https://leetcode.com/problems/compare-version-numbers/
+            string[] sarr = s.Split('.');
+            string[] tarr = t.Split('.');
+            int n1 = sarr.Length;
+            int n2 = tarr.Length;
+
+            int i = 0;
+            while (i < Math.Max(n1, n2))
+            {
+                int v1 = i < n1 ? int.Parse(sarr[i]) : 0;
+                int v2 = i < n2 ? int.Parse(tarr[i]) : 0;
+                if (v1 != v2)
+                {
+                    return v1 > v2 ? 1 : -1;
+                }
+                i++;
+            }
+            return 0;
+        }
+
+        public int[] ProductExceptSelf(int[] nums)
+        {//https://leetcode.com/problems/product-of-array-except-self/
+            int l = nums.Length;
+            int[] res = new int[l];
+            res[0] = 1;
+            int i = 1;
+            while (i < l)
+            {
+                res[i] = res[i - 1] * nums[i - 1];
+                i++;
+            }
+
+            int r = 1;
+            i = l - 1;
+            while (i >= 0)
+            {
+                res[i] = res[i] * r;
+                r = r * nums[i];
+                i--;
+            }
+            return res;
         }
 
         public void ReverseWords(char[] s)
@@ -1295,7 +1454,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public TreeNode TrimBST(TreeNode root, int low, int high)
-        {
+        { //https://leetcode.com/problems/trim-a-binary-search-tree/
             if (root == null) return root;
             if (root.val > high) return TrimBST(root.left, low, high);
             if (root.val < low) return TrimBST(root.right, low, high);
@@ -1319,7 +1478,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public int PeakIndexInMountainArray(int[] arr)
-        {
+        { //https://leetcode.com/problems/peak-index-in-a-mountain-array/
             return FindPeak(arr, 0, arr.Length - 1);
         }
 
@@ -1378,7 +1537,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public string GetHint(string secret, string guess)
-        {
+        { //https://leetcode.com/problems/bulls-and-cows/
             if (secret.Length != guess.Length) return "0A0B";
             Dictionary<char, int> dict = new Dictionary<char, int>();
             int i = 0;
@@ -1428,7 +1587,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public ListNode AddTwoNumbers(ListNode l1, ListNode l2)
-        {
+        { //https://leetcode.com/problems/add-two-numbers/
             BigInteger l1Sum = 0;
             BigInteger l2Sum = 0;
             BigInteger placeVal = 1;
@@ -1455,7 +1614,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public ListNode RemoveNthFromEnd(ListNode head, int n)
-        {
+        { //https://leetcode.com/problems/remove-nth-node-from-end-of-list/
             //https://www.geeksforgeeks.org/delete-nth-node-from-the-end-of-the-given-linked-list/
             ListNode first = head;
             ListNode second = head;
@@ -1495,6 +1654,52 @@ namespace DataStructuresAndAlgorithms
                 curr = next;
             }
             return prev;
+        }
+
+        public ListNode MiddleNode(ListNode head)
+        { //https://leetcode.com/problems/middle-of-the-linked-list/
+            ListNode slow = head, fast = head;
+            while (fast != null && fast.next != null)
+            {
+                slow = slow.next;
+                fast = fast.next.next;
+            }
+            return slow;
+        }
+
+        public void ReorderList(ListNode head)
+        { //https://leetcode.com/problems/reorder-list/
+            ListNode slow = head, fast = head;
+            //Middle node
+            while (fast != null && fast.next != null)
+            {
+                slow = slow.next;
+                fast = fast.next.next;
+            }
+
+            // slow is middle node
+            // reverse middle to last, including
+            ListNode prev = null, curr = slow, next;
+            while (curr != null)
+            {
+                next = curr.next;
+                curr.next = prev;
+                prev = curr;
+                curr = next;
+            }
+
+            // prev is the second portion head now
+            ListNode first = head, second = prev;
+            while (second.next != null)
+            {
+                next = first.next;
+                first.next = second;
+                first = next;
+
+                next = second.next;
+                second.next = first;
+                second = next;
+            }
         }
 
         public ListNode MergeKLists(ListNode[] lists)
@@ -1548,7 +1753,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public ListNode GetIntersectionNode(ListNode headA, ListNode headB) // Common ancestor problem.
-        { //https://leetcode.com/problems/intersection-of-two-linked-lists/submissions/
+        { //https://leetcode.com/problems/intersection-of-two-linked-lists/
             ListNode pA = headA;
             ListNode pB = headB;
             while (pA != pB)
@@ -1669,7 +1874,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public string Convert2(string s, int numRows)
-        {
+        { //https://leetcode.com/problems/zigzag-conversion/
             if (numRows == 1) return s;
             int i = 0, k = 2 * numRows - 2;
             StringBuilder sb = new StringBuilder();
@@ -1689,7 +1894,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public int MyAtoi(string s)
-        {
+        { //https://leetcode.com/problems/string-to-integer-atoi/
             int sign = 1, i = 0, result = 0;
             if (s.Length == 0) return result;
             s = s.Trim(' ');
@@ -1758,7 +1963,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public int MaxAreaContainerWithMostWater(int[] A)
-        {
+        { //https://leetcode.com/problems/container-with-most-water/
             //https://www.youtube.com/watch?v=4GIIy1o-3DM&ab_channel=jayatitiwari
             int i = 0, j = A.Length - 1, area = 0;
             while (i < j)
@@ -1769,8 +1974,6 @@ namespace DataStructuresAndAlgorithms
             }
             return area;
         }
-
-        
 
         public IList<string> LetterCombinations(string digits)
         { //https://leetcode.com/problems/letter-combinations-of-a-phone-number/
@@ -1841,7 +2044,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public List<string> printParenthesis(char[] str, int n)
-        {
+        { //https://leetcode.com/problems/generate-parentheses/
             List<string> result = new List<string>();
             if (n > 0)
                 _printParenthesis(str, 0, n, 0, 0, result);
@@ -2292,7 +2495,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public int NumIslands(char[][] grid)
-        {
+        { //https://leetcode.com/problems/number-of-islands/
             int rows = grid.Length;
             int cols = grid[0].Length;
 
@@ -2323,6 +2526,28 @@ namespace DataStructuresAndAlgorithms
             MarkAdjacentIslands(grid, i, j - 1, rows, cols); //left
             MarkAdjacentIslands(grid, i + 1, j, rows, cols); //down
             MarkAdjacentIslands(grid, i - 1, j, rows, cols);// up
+        }
+
+        public int[][] FloodFill(int[][] image, int sr, int sc, int newColor)
+        { //https://leetcode.com/problems/flood-fill/
+            int rowlen = image.Length;
+            int collen = image[0].Length;
+            int oldColor = image[sr][sc];
+            if (oldColor != newColor)
+            {
+                MarkAdjacentFloodFill(image, sr, sc, rowlen, collen, oldColor, newColor);
+            }
+            return image;
+        }
+
+        public void MarkAdjacentFloodFill(int[][] image, int i, int j, int rowlen, int collen, int oldColor, int newColor)
+        {
+            if (i < 0 || i >= rowlen || j < 0 || j >= collen || image[i][j] != oldColor) return;
+            image[i][j] = newColor;
+            MarkAdjacentFloodFill(image, i, j + 1, rowlen, collen, oldColor, newColor);
+            MarkAdjacentFloodFill(image, i, j - 1, rowlen, collen, oldColor, newColor);
+            MarkAdjacentFloodFill(image, i - 1, j, rowlen, collen, oldColor, newColor);
+            MarkAdjacentFloodFill(image, i + 1, j, rowlen, collen, oldColor, newColor);
         }
 
         public int ClimbStairs(int n)
@@ -2904,7 +3129,7 @@ namespace DataStructuresAndAlgorithms
     }
 
     #region Diameter of Tree
-    public class Solution
+    public class DiameterSolution
     {
         int dia = 0;
         public int DiameterOfBinaryTree(TreeNode root)
@@ -3052,6 +3277,47 @@ namespace DataStructuresAndAlgorithms
             this.right = right;
         }
     }
+
+    public class SymmetryClass
+    {
+        public bool IsSymmetric(TreeNode root)
+        { //https://leetcode.com/problems/symmetric-tree/
+            return SymmetricUtil(root, root);
+        }
+
+        public bool SymmetricUtil(TreeNode t1, TreeNode t2)
+        { // Recursive
+            if (t1 == null && t2 == null) return true;
+            if (t1 == null || t2 == null) return false;
+            return (t1.val == t2.val) && SymmetricUtil(t1.left, t2.right)
+                            && SymmetricUtil(t1.right, t2.left);
+
+        }
+
+        public bool SymmetricUtil2(TreeNode root)
+        { // iterative
+            Queue<TreeNode> q = new Queue<TreeNode>();
+            if (root != null)
+            {
+                q.Enqueue(root);
+                q.Enqueue(root);
+            }
+            while (q.Count > 0)
+            {
+                TreeNode t1 = q.Dequeue();
+                TreeNode t2 = q.Dequeue();
+                if (t1 == null && t2 == null) continue;
+                if (t1 == null || t2 == null) return false;
+                if (t1.val != t2.val) return false;
+                q.Enqueue(t1.left);
+                q.Enqueue(t2.right);
+                q.Enqueue(t1.right);
+                q.Enqueue(t2.left);
+            }
+            return true;
+        }
+    }
+
 
     //Inorder - preorder - postorder
     public class BinaryTreeDFS
@@ -3272,7 +3538,7 @@ namespace DataStructuresAndAlgorithms
             return root;
         }
     }
-    
+
     public class Node
     {
         public int val;
@@ -3294,7 +3560,7 @@ namespace DataStructuresAndAlgorithms
 
     #region Kth Largest
     public class KthLargest
-    {
+    { //https://leetcode.com/problems/kth-largest-element-in-an-array/
         int[] minHeap;
         int heapSize;
         SortAlgorithms sortAlgorithms = new SortAlgorithms();
@@ -3460,7 +3726,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         // BuildTree, Construct Binary Tree from Preorder and Inorder Traversal
-        public TreeNode BinaryTreeFromInorderAndPreorderUtil(int[] inorder, int[] preorder, int inostart, int inoend) 
+        public TreeNode BinaryTreeFromInorderAndPreorderUtil(int[] inorder, int[] preorder, int inostart, int inoend)
         {
             if (inostart > inoend) return null;
             int curRoot = preorder[rootIndex];
