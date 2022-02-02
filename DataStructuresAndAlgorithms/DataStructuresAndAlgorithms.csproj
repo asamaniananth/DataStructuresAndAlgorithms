@@ -47,6 +47,7 @@
     <Compile Include="AthenaHealth.cs" />
     <Compile Include="BFSLevelOrderTraversal.cs" />
     <Compile Include="BinaryTree.cs" />
+    <Compile Include="Bittrex13thJan2022.cs" />
     <Compile Include="Chewy.cs" />
     <Compile Include="Dinosaur.cs" />
     <Compile Include="DoublyLinkedList.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="HashTable.cs" />
     <Compile Include="HashTableNodePair.cs" />
     <Compile Include="LeetCodeProblems.cs" />
+    <Compile Include="LendIo21stJan2022.cs" />
     <Compile Include="LinkedList.cs" />
     <Compile Include="Microsoft5thNov2021.cs" />
     <Compile Include="PriorityQueue.List.cs" />
@@ -68,6 +70,7 @@
     <Compile Include="Queue.Array.cs" />
     <Compile Include="Queue.List.cs" />
     <Compile Include="ReversingArray.cs" />
+    <Compile Include="ServiceNow11thJan2022.cs" />
     <Compile Include="SortAlgorithms.cs" />
     <Compile Include="Stack.Array.cs" />
     <Compile Include="Stack.List.cs" />

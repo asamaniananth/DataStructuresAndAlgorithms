@@ -108,6 +108,103 @@ namespace DataStructuresAndAlgorithms
             return res;
         }
 
+        public int MaxSubArrayLen(int[] nums, int k) // premium problem
+        { // https://leetcode.com/problems/maximum-size-subarray-sum-equals-k/
+            // use prefix sum, like fibanacci
+            int prefix = 0, longest = 0;
+            Dictionary<int, int> dict = new Dictionary<int, int>();
+            int i = 0;
+            while (i < nums.Length)
+            {
+                prefix += nums[i];
+
+                if (prefix == k)
+                {
+                    longest = i + 1;
+                }
+
+                if (dict.ContainsKey(prefix - k))
+                {
+                    longest = Math.Max(longest, i - dict[prefix - k]);
+                }
+
+                if (!dict.ContainsKey(prefix))
+                {
+                    dict.Add(prefix, i);
+                }
+                i++;
+            }
+            return longest;
+        }
+
+        public IList<int> ArraysIntersection(int[] arr1, int[] arr2, int[] arr3) // premium problem
+        { //https://leetcode.com/problems/intersection-of-three-sorted-arrays/ 
+            // can be done using dictionary, add element and increment value, return if element value =3
+            int p = 0, q = 0, r = 0;
+            List<int> res = new List<int>();
+
+            while (p < arr1.Length && q < arr2.Length && r < arr3.Length)
+            {
+                if (arr1[p] == arr2[q] && arr2[q] == arr3[r])
+                {
+                    res.Add(arr1[p]);
+                    p++;
+                    q++;
+                    r++;
+                }
+                else
+                {
+                    if (arr1[p] < arr2[q])
+                    {
+                        p++;
+                    }
+                    else if (arr2[q] < arr3[r])
+                    {
+                        q++;
+                    }
+                    else
+                    {
+                        r++;
+                    }
+                }
+            }
+            return res;
+        }
+
+        public int[] NextGreaterElement(int[] nums1, int[] nums2)
+        { // https://leetcode.com/problems/next-greater-element-i/
+            Stack<int> st = new Stack<int>();
+            Dictionary<int, int> dict = new Dictionary<int, int>();
+
+            int i = 0;
+            while (i < nums2.Length)
+            {
+                while (st.Count > 0 && nums2[i] > st.Peek())
+                {
+                    dict.Add(st.Pop(), nums2[i]);
+                }
+                st.Push(nums2[i]);
+                i++;
+            }
+
+            while (st.Count != 0)
+            {
+                dict.Add(st.Pop(), -1);
+            }
+
+            int[] res = new int[nums1.Length];
+            i = 0;
+            while (i < nums1.Length)
+            {
+                if (dict.ContainsKey(nums1[i]))
+                {
+                    res[i] = dict[nums1[i]];
+                }
+                i++;
+            }
+            return res;
+        }
+
         public int ReverseNumber(int x)
         {
             if (x < 0) return 0;
@@ -268,6 +365,128 @@ namespace DataStructuresAndAlgorithms
             return M[(num / 1000)] + C[(num % 1000) / 100] + X[(num % 100) / 10] + I[num % 10];
         }
 
+        public int DaysBetweenDates(string date1, string date2)
+        { // https://leetcode.com/problems/number-of-days-between-two-dates/
+            //https://www.geeksforgeeks.org/find-number-of-days-between-two-given-dates/
+            return Math.Abs(NumberOfDays(date1) - NumberOfDays(date2));
+        }
+
+        public int NumberOfDays(string date)
+        {
+            int[] daysInMonth = new int[] { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+            string[] sarr = date.Split('-');
+            int y = int.Parse(sarr[0]);
+            int m = int.Parse(sarr[1]);
+            int d = int.Parse(sarr[2]);
+
+            int i = 1971;
+            while (i < y)
+            {
+                d += IsLeapYear(i) ? 366 : 365;
+                i++;
+            }
+
+            i = 1;
+            while (i < m) // lessthan month because we already have current month's days in d
+            {
+                if (i == 2 && IsLeapYear(y))
+                {
+                    d += 1;
+                }
+                d += daysInMonth[i];
+                i++;
+            }
+            return d;
+        }
+
+        public bool IsLeapYear(int year)
+        {
+            // An year is a leap year if it is
+            // a multiple of 4, multiple of 400
+            // and not a multiple of 100.
+            if (((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public string ReverseVowels(string s)
+        {
+            int left = 0, right = s.Length - 1;
+            char[] carr = s.ToCharArray();
+            while (left < right)
+            {
+                if (!IsVowel(s[left]))
+                {
+                    left++;
+                    continue;
+                }
+                if (!IsVowel(s[right]))
+                {
+                    right--;
+                    continue;
+                }
+                char temp = carr[left];
+                carr[left] = carr[right];
+                carr[right] = temp;
+                left++;
+                right--;
+            }
+            return new String(carr);
+        }
+
+        public bool IsVowel(char x)
+        {
+            if (x == 'a' || x == 'e' || x == 'i' || x == 'o' || x == 'u' || x == 'A' || x == 'E' || x == 'I' || x == 'O' || x == 'U')
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool BuddyStrings(string s, string t)
+        { // https://leetcode.com/problems/buddy-strings/
+            // https://www.geeksforgeeks.org/meta-strings-check-two-strings-can-become-swap-one-string/
+            if (s.Length != t.Length) return false;
+            int count = 0;
+            int first = -1, second = -1;
+            if (s == t)
+            {
+                int c = (new HashSet<char>(s)).Count;
+                if (c < s.Length)
+                {
+                    return true;
+                }
+                return false;
+            }
+            else
+            {
+                int i = 0;
+                while (i < s.Length)
+                {
+                    if (s[i] != t[i])
+                    {
+                        count++;
+                        if (count > 2)
+                        {
+                            return false;
+                        }
+                        first = second;
+                        second = i;
+                    }
+                    i++;
+                }
+            }
+            return (count == 2 && s[first] == t[second] && s[second] == t[first]);
+        }
+
         public string LongestCommonPrefix(string[] strs)
         { //https://leetcode.com/problems/longest-common-prefix/
             string longest = "";
@@ -287,6 +506,45 @@ namespace DataStructuresAndAlgorithms
             }
             return longest;
         }
+
+        /**
+         * https://leetcode.com/problems/read-n-characters-given-read4/
+         * The Read4 API is defined in the parent class Reader4.        premium question, very important
+         *     int Read4(char[] buf4);
+         */
+
+        //public class Solution : Reader4
+        //{
+        /**
+         * @param buf Destination buffer
+         * @param n   Number of characters to read
+         * @return    The number of actual characters read
+         */
+
+        //    public int Read(char[] buf, int n)
+        //    {
+        //        int copiedchars = 0, readchars = 4;
+        //        char[] buf4 = new char[4];
+
+        //        while (copiedchars < n && readchars == 4)
+        //        {
+        //            readchars = Read4(buf4);
+        //            int i = 0;
+        //            while (i < readchars)
+        //            {
+        //                if (copiedchars == n)
+        //                {
+        //                    return copiedchars;
+        //                }
+        //                buf[copiedchars] = buf4[i];
+        //                copiedchars++;
+        //                i++;
+        //            }
+        //        }
+        //        return copiedchars;
+        //    }
+        //}
+
 
         public int LengthOfLongestSubstringTwoDistinct(string s)
         { //https://leetcode.com/problems/longest-substring-with-at-most-two-distinct-characters/   premium question
@@ -416,6 +674,26 @@ namespace DataStructuresAndAlgorithms
             return res;
         }
 
+        public int MaxProfit(int[] prices)
+        { // https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
+            int lowest = int.MaxValue;
+            int profit = 0;
+            int i = 0;
+            while (i < prices.Length)
+            {
+                if (prices[i] < lowest)
+                {
+                    lowest = prices[i];
+                }
+                else if (profit < (prices[i] - lowest))
+                {
+                    profit = prices[i] - lowest;
+                }
+                i++;
+            }
+            return profit;
+        }
+
         public string FindReplaceString(string s, int[] indices, string[] sources, string[] targets)
         {
             // https://leetcode.com/problems/find-and-replace-in-string/
@@ -444,6 +722,20 @@ namespace DataStructuresAndAlgorithms
             }
 
             return sb.ToString();
+        }
+
+        public int MinTimeToVisitAllPoints(int[][] points)
+        { // https://leetcode.com/problems/minimum-time-visiting-all-points/
+            int result = 0;
+            int i = 1;
+            while (i < points.Length)
+            {
+                int[] curr = points[i]; // (x2,y2)
+                int[] prev = points[i - 1]; // (x1,y1)
+                result += Math.Max(Math.Abs(curr[0] - prev[0]), Math.Abs(curr[1] - prev[1])); // Max((x2-x1) (y2-y1)
+                i++;
+            }
+            return result;
         }
 
         // l1: 1->2->4, 
@@ -562,6 +854,64 @@ namespace DataStructuresAndAlgorithms
             return result;
         }
 
+        public int[] SortedSquares(int[] nums)
+        { // https://leetcode.com/problems/squares-of-a-sorted-array/
+            int left = 0, right = nums.Length - 1;
+            int i = nums.Length - 1;
+            int[] result = new int[nums.Length];
+            while (i >= 0)
+            {
+                int square;
+                if (Math.Abs(nums[left]) > Math.Abs(nums[right]))
+                {
+                    square = nums[left];
+                    left++;
+                }
+                else
+                {
+                    square = nums[right];
+                    right--;
+                }
+                result[i] = square * square;
+                i--;
+            }
+            return result;
+        }
+
+        public string CustomSortString(string order, string s)
+        { // https://leetcode.com/problems/custom-sort-string/
+            int[] alpha = new int[26];
+            int i = 0;
+            while (i < s.Length)
+            {
+                alpha[s[i] - 'a']++;
+                i++;
+            }
+            StringBuilder sb = new StringBuilder();
+            i = 0;
+            while (i < order.Length)
+            {
+                while (alpha[order[i] - 'a'] > 0)
+                {
+                    sb.Append(order[i]);
+                    alpha[order[i] - 'a']--;
+                }
+                i++;
+            }
+            char c = 'a';
+            while (c <= 'z')
+            {
+                while (alpha[c - 'a'] > 0)
+                {
+                    sb.Append(c);
+                    alpha[c - 'a']--;
+                }
+                c++;
+            }
+
+            return sb.ToString();
+        }
+
         public void NextPermutation(int[] nums)
         { //https://leetcode.com/problems/next-permutation/
             int i = nums.Length - 2;
@@ -605,8 +955,8 @@ namespace DataStructuresAndAlgorithms
             {
                 if (!char.IsPunctuation(para[i]))
                 {
-                    sb.Append(para[i]);                    
-                }                
+                    sb.Append(para[i]);
+                }
                 i++;
             }
 
@@ -1079,6 +1429,31 @@ namespace DataStructuresAndAlgorithms
             return true;
         }
 
+        public class NumArray
+        { // https://leetcode.com/problems/range-sum-query-immutable/
+            List<int> list = new List<int>();
+            public NumArray(int[] nums)
+            {
+                int i = 0;
+                while (i < nums.Length)
+                {
+                    list.Add(nums[i]);
+                    i++;
+                }
+            }
+
+            public int SumRange(int left, int right)
+            {
+                int result = 0;
+                while (left <= right && left < list.Count)
+                {
+                    result += list[left];
+                    left++;
+                }
+                return result;
+            }
+        }
+
         public int GetSum(int a, int b)
         {
             int carry;
@@ -1139,6 +1514,26 @@ namespace DataStructuresAndAlgorithms
             root.left = BuildBST(nums, start, mid - 1);
             root.right = BuildBST(nums, mid + 1, end);
             return root;
+        }
+
+        public int ClosestValue(TreeNode root, double target)
+        { //https://leetcode.com/problems/closest-binary-search-tree-value/     premium question
+            int temp = root.val, closest = root.val;
+            while (root != null)
+            {
+                temp = root.val;
+                closest = Math.Abs(temp - target) < Math.Abs(closest - target) ? temp : closest;
+
+                if (target > root.val)
+                {
+                    root = root.right;
+                }
+                else
+                {
+                    root = root.left;
+                }
+            }
+            return closest;
         }
 
         public void RotateArray(int[] nums, int k)
@@ -1281,7 +1676,7 @@ namespace DataStructuresAndAlgorithms
                 sb.Append(" ");
             }
             return sb.ToString().Trim();
-        }        
+        }
 
         public string reverseString(string s)
         {
@@ -3128,6 +3523,133 @@ namespace DataStructuresAndAlgorithms
 
     }
 
+    /**
+  // This is the interface that allows for creating nested lists.
+  // You should not implement it, or speculate about its implementation
+  interface NestedInteger {
+ 
+      // Constructor initializes an empty nested list.
+      public NestedInteger();
+ 
+      // Constructor initializes a single integer.
+      public NestedInteger(int value);
+ 
+      // @return true if this NestedInteger holds a single integer, rather than a nested list.
+      bool IsInteger();
+ 
+      // @return the single integer that this NestedInteger holds, if it holds a single integer
+      // Return null if this NestedInteger holds a nested list
+      int GetInteger();
+ 
+     // Set this NestedInteger to hold a single integer.
+      public void SetInteger(int value);
+ 
+     // Set this NestedInteger to hold a nested list and adds a nested integer to it.
+      public void Add(NestedInteger ni);
+ 
+      // @return the nested list that this NestedInteger holds, if it holds a nested list
+      // Return null if this NestedInteger holds a single integer
+     IList<NestedInteger> GetList();
+  }
+ */
+    //public class DepthSumSolution             // ****** premium Question*******
+    //{
+    //    public int DepthSum(IList<NestedInteger> nestedList)
+    //    {
+    //        int depth = 1;
+    //        return DepthSumUtil(nestedList, depth);
+    //    }
+    //    public int DepthSumUtil(IList<NestedInteger> nestedList, int depth)
+    //    {
+    //        int total = 0;
+    //        int i = 0;
+    //        while (i < nestedList.Count)
+    //        {
+    //            if (nestedList[i].IsInteger())
+    //            {
+    //                total += nestedList[i].GetInteger() * depth;
+    //            }
+    //            else
+    //            {
+    //                total += DepthSumUtil(nestedList[i].GetList(), depth + 1);
+    //            }
+
+    //            i++;
+    //        }
+    //        return total;
+    //    }
+    //}
+
+    /**
+ * // This is the interface that allows for creating nested lists.
+ * // You should not implement it, or speculate about its implementation
+ * interface NestedInteger {
+ *
+ *     // Constructor initializes an empty nested list.
+ *     public NestedInteger();
+ *
+ *     // Constructor initializes a single integer.
+ *     public NestedInteger(int value);
+ *
+ *     // @return true if this NestedInteger holds a single integer, rather than a nested list.
+ *     bool IsInteger();
+ *
+ *     // @return the single integer that this NestedInteger holds, if it holds a single integer
+ *     // Return null if this NestedInteger holds a nested list
+ *     int GetInteger();
+ *
+ *     // Set this NestedInteger to hold a single integer.
+ *     public void SetInteger(int value);
+ *
+ *     // Set this NestedInteger to hold a nested list and adds a nested integer to it.
+ *     public void Add(NestedInteger ni);
+ *
+ *     // @return the nested list that this NestedInteger holds, if it holds a nested list
+ *     // Return null if this NestedInteger holds a single integer
+ *     IList<NestedInteger> GetList();
+ * }
+ */
+    //public class DepthSumInverseSolution
+    //{
+    //    public int DepthSumInverse(IList<NestedInteger> nestedList)
+    //    {
+    //        int maxdepth = findmaxdepth(nestedList);
+    //        return Util(nestedList, 1, maxdepth);
+    //    }
+    //    public int findmaxdepth(IList<NestedInteger> nestedList)
+    //    {
+    //        int max = 1;
+    //        int i = 0;
+    //        while (i < nestedList.Count)
+    //        {
+    //            if (!nestedList[i].IsInteger())
+    //            {
+    //                max = Math.Max(max, 1 + findmaxdepth(nestedList[i].GetList()));
+    //            }
+    //            i++;
+    //        }
+    //        return max;
+    //    }
+    //    public int Util(IList<NestedInteger> nestedList, int depth, int maxdepth)
+    //    {
+    //        int res = 0;
+    //        int i = 0;
+    //        while (i < nestedList.Count)
+    //        {
+    //            if (!nestedList[i].IsInteger())
+    //            {
+    //                res += Util(nestedList[i].GetList(), depth + 1, maxdepth);
+    //            }
+    //            else
+    //            {
+    //                res += nestedList[i].GetInteger() * (maxdepth - depth + 1);
+    //            }
+    //            i++;
+    //        }
+    //        return res;
+    //    }
+    //}
+
     #region Diameter of Tree
     public class DiameterSolution
     {
@@ -3275,6 +3797,34 @@ namespace DataStructuresAndAlgorithms
             this.val = val;
             this.left = left;
             this.right = right;
+        }
+    }
+
+    public class RangeSumBSTSolution
+    {
+        int result = 0;
+        public int RangeSumBST(TreeNode root, int low, int high)
+        {
+            UtilRangeSumBST(root, low, high);
+            return result;
+        }
+        public void UtilRangeSumBST(TreeNode root, int low, int high)
+        {
+            if (root != null)
+            {
+                if (root.val < high)
+                {
+                    UtilRangeSumBST(root.right, low, high);
+                }
+                if (root.val > low)
+                {
+                    UtilRangeSumBST(root.left, low, high);
+                }
+                if (root.val >= low && root.val <= high)
+                {
+                    result = result + root.val;
+                }
+            }
         }
     }
 
@@ -3430,7 +3980,7 @@ namespace DataStructuresAndAlgorithms
             return res;
         }
 
-        public TreeNode LowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q)
+        public TreeNode LowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) // Binary Search Tree
         { //https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/
             int pval = p.val;
             int qval = q.val;
@@ -3452,7 +4002,7 @@ namespace DataStructuresAndAlgorithms
                 }
             }
             return node;
-        } // Binary Search Tree
+        }
 
         public TreeNode LowestCommonAncestorBinaryTree(TreeNode root, TreeNode p, TreeNode q) //Binary Tree
         { // https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/
