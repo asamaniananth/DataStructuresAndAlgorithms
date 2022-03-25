@@ -9,7 +9,7 @@ namespace DataStructuresAndAlgorithms
 { // Interviewer Brandon Barry
     class LendIo21stJan2022
     {
-		private static void Main()
+		private static void LendioMain()
 		{
 			void RunTests(params Expression<Action>[] expressions)
 			{

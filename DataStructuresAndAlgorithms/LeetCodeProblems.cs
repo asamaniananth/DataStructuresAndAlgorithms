@@ -99,7 +99,6 @@ namespace DataStructuresAndAlgorithms
                             {
                                 l++;
                             }
-
                         }
                     }
                 }
@@ -138,7 +137,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public IList<int> ArraysIntersection(int[] arr1, int[] arr2, int[] arr3) // premium problem
-        { //https://leetcode.com/problems/intersection-of-three-sorted-arrays/ 
+        { // https://leetcode.com/problems/intersection-of-three-sorted-arrays/ 
             // can be done using dictionary, add element and increment value, return if element value =3
             int p = 0, q = 0, r = 0;
             List<int> res = new List<int>();
@@ -171,7 +170,7 @@ namespace DataStructuresAndAlgorithms
             return res;
         }
 
-        public int[] NextGreaterElement(int[] nums1, int[] nums2)
+        public int[] NextGreaterElement(int[] nums1, int[] nums2) // you watch video, if unable to understand logic
         { // https://leetcode.com/problems/next-greater-element-i/
             Stack<int> st = new Stack<int>();
             Dictionary<int, int> dict = new Dictionary<int, int>();
@@ -415,7 +414,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public string ReverseVowels(string s)
-        {
+        { //https://leetcode.com/problems/reverse-vowels-of-a-string/
             int left = 0, right = s.Length - 1;
             char[] carr = s.ToCharArray();
             while (left < right)
@@ -674,6 +673,26 @@ namespace DataStructuresAndAlgorithms
             return res;
         }
 
+        public bool ContainsDuplicate(int[] nums)
+        {
+            HashSet<int> set = new HashSet<int>();
+            int i = 0;
+            while (i < nums.Length)
+            {
+                if (!set.Contains(nums[i]))
+                {
+                    set.Add(nums[i]);
+                }
+                else
+                {
+                    set.Clear();
+                    return true;
+                }
+                i++;
+            }
+            return false;
+        }
+
         public int MaxProfit(int[] prices)
         { // https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
             int lowest = int.MaxValue;
@@ -878,7 +897,31 @@ namespace DataStructuresAndAlgorithms
             return result;
         }
 
-        public string CustomSortString(string order, string s)
+        public List<string> WordSplit(string s, int maxlen) // wrong solution
+        {
+            string[] sarr = s.Split(' ');
+            List<string> res = new List<string>();
+            int i = 0;
+            int totalLen = 0;
+            StringBuilder sb = new StringBuilder();
+            foreach(string x in sarr)
+            {
+                if(x.Length+totalLen <= maxlen)
+                {
+                    sb.Append(s[i]);
+                    sb.Append(" ");
+                    totalLen = sb.ToString().Length + x.Length;
+                }
+                else if(x.Length + totalLen > maxlen)
+                {
+                    res.Add(sb.ToString());
+                    totalLen = 0;
+                }
+            }            
+            return res;
+        }
+
+        public string CustomSortString(string order, string s) 
         { // https://leetcode.com/problems/custom-sort-string/
             int[] alpha = new int[26];
             int i = 0;
@@ -998,6 +1041,94 @@ namespace DataStructuresAndAlgorithms
                 }
             }
             return result;
+        }
+
+        public int[] TopKFrequent(int[] nums, int k)
+        { // https://leetcode.com/problems/top-k-frequent-elements/
+            // https://www.youtube.com/watch?v=YPTqKIgVk-k&ab_channel=NeetCode
+            if (nums.Length == k) return nums;
+            Dictionary<int, int> dict = new Dictionary<int, int>();
+            foreach (int x in nums)
+            {
+                if (!dict.ContainsKey(x))
+                {
+                    dict.Add(x, 1);
+                }
+                else
+                {
+                    dict[x]++;
+                }
+            }
+
+            List<int>[] bucket = new List<int>[nums.Length + 1];
+            for (int i = 0; i < bucket.Length; i++)
+            {
+                bucket[i] = new List<int>();
+            }
+
+            foreach (var kv in dict)
+            {
+                bucket[kv.Value].Add(kv.Key);
+            }
+
+            List<int> res = new List<int>();
+            for (int i = bucket.Length - 1; i >= 0; i--)
+            {
+                for (int j = 0; j < bucket[i].Count; j++)
+                {
+                    res.Add(bucket[i][j]);
+                    if (res.Count == k)
+                    {
+                        return res.ToArray();
+                    }
+                }
+            }
+
+            return res.ToArray();
+        }
+
+        public IList<string> TopKFrequent(string[] words, int k)
+        { // https://leetcode.com/problems/top-k-frequent-words/
+            Dictionary<string, int> dict = new Dictionary<string, int>();
+
+            foreach (string w in words)
+            {
+                if (!dict.ContainsKey(w))
+                {
+                    dict.Add(w, 1);
+                }
+                else
+                {
+                    dict[w]++;
+                }
+            }
+
+            List<string>[] bucket = new List<string>[words.Length + 1];
+            for (int i = 0; i < bucket.Length; i++)
+            {
+                bucket[i] = new List<string>();
+            }
+
+            foreach (var kv in dict)
+            {
+                bucket[kv.Value].Add(kv.Key);
+            }
+
+            List<string> res = new List<string>();
+
+            for (int i = bucket.Length - 1; i >= 0; i--)
+            {
+                bucket[i].Sort();
+                for (int j = 0; j < bucket[i].Count; j++)
+                {
+                    res.Add(bucket[i][j]);
+                    if (res.Count == k)
+                    {
+                        return res;
+                    }
+                }
+            }
+            return res;
         }
 
         public int RemoveDuplicates(int[] nums)
@@ -1652,6 +1783,27 @@ namespace DataStructuresAndAlgorithms
                 }
             }
             return result;
+        }
+
+        public int MissingNumber(int[] nums)
+        { // https://leetcode.com/problems/missing-number/
+            int i = 0;
+            while (i < nums.Length)
+            {
+                int j = Math.Abs(nums[i]) - 1;
+                nums[j] = Math.Abs(nums[j]) * -1;
+                i++;
+            }
+            i = 0;
+            while (i < nums.Length)
+            {
+                if (nums[i] > 0)
+                {
+                    return i + 1;
+                }
+                i++;
+            }
+            return -1;
         }
 
         public bool IsSubtree(TreeNode s, TreeNode t)
@@ -3523,6 +3675,29 @@ namespace DataStructuresAndAlgorithms
 
     }
 
+    #region URL shortner
+    public class Codec
+    {
+        public Dictionary<string, string> dic = new Dictionary<string, string>();
+        public string hostApi = "http://tinyurl.com/";
+
+        // Encodes a URL to a shortened URL
+        public string encode(string longUrl)
+        {
+            int hash = longUrl.GetHashCode();
+            string shorturl = hostApi + hash.ToString();
+            dic.Add(shorturl, longUrl);
+            return shorturl;
+        }
+
+        // Decodes a shortened URL to its original URL.
+        public string decode(string shortUrl)
+        {
+            return dic[shortUrl];
+        }
+    }
+    #endregion
+
     /**
   // This is the interface that allows for creating nested lists.
   // You should not implement it, or speculate about its implementation
@@ -3804,7 +3979,7 @@ namespace DataStructuresAndAlgorithms
     {
         int result = 0;
         public int RangeSumBST(TreeNode root, int low, int high)
-        {
+        { // https://leetcode.com/problems/range-sum-of-bst/
             UtilRangeSumBST(root, low, high);
             return result;
         }
@@ -3980,7 +4155,7 @@ namespace DataStructuresAndAlgorithms
             return res;
         }
 
-        public TreeNode LowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) // Binary Search Tree
+        public TreeNode LowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) // Binary Search Tree, common ancestor problem
         { //https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/
             int pval = p.val;
             int qval = q.val;
@@ -4295,7 +4470,7 @@ namespace DataStructuresAndAlgorithms
     }
     #endregion
 
-    #region
+    #region IS ValidBST
     public class IsValidBSTClass
     {
         int? lastVal = null;

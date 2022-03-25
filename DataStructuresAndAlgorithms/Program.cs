@@ -194,6 +194,8 @@ namespace DataStructuresAndAlgorithms
             //var output = leetCodeProblems.PrintFromCharToZ('b');
             //var output = leetCodeProblems.ValidIPAddress("1.0.1.");
             var output = leetCodeProblems.MostCommonWord("a, a, a, a, b,b,b,c, c", new string[] { "a" });
+            //var output = leetCodeProblems.WordSplit("The quick brown fox jumps over the lazy dog", 10);
+            //var output = leetCodeProblems.TopKFrequent(new int[] { -1, -1 }, 1);
 
             #endregion
 

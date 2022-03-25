@@ -8,7 +8,7 @@ namespace DataStructuresAndAlgorithms
 {
     public class Bittrex13thJan2022
     {
-        public static void Main(string[] args)
+        public static void BittrexMain(string[] args)
         {
             // you can write to stdout for debugging purposes, e.g.
             Console.WriteLine("This is a debug message");
