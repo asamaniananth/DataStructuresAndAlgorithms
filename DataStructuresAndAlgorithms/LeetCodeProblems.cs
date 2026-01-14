@@ -9,8 +9,9 @@ namespace DataStructuresAndAlgorithms
 {
     public class LeetCodeProblems
     {
+        #region leetcode Easy
         public int[] TwoSum(int[] nums, int target)
-        {
+        { // 1. https://leetcode.com/problems/two-sum/description/
             #region  Brute force method
             //for (int i = 0; i < nums.Length; i++)
             //{
@@ -24,6 +25,25 @@ namespace DataStructuresAndAlgorithms
             //    }
             //}
             //throw new ArgumentOutOfRangeException();
+            #endregion
+
+            # region using single iteration
+            Dictionary<int, int> dict = new Dictionary<int, int>();
+            int j = 0, n = nums.Length;
+            while (j < n)
+            {
+                int diff = target - nums[j];
+                if (dict.ContainsKey(diff))
+                {
+                    return new int[] { dict[diff], j };
+                }
+                if (!dict.ContainsKey(nums[j]))
+                {
+                    dict.Add(nums[j], j);
+                }
+
+                j++;
+            }
             #endregion
 
             #region Using dictionary
@@ -42,10 +62,84 @@ namespace DataStructuresAndAlgorithms
             }
             throw new ArgumentOutOfRangeException();
             #endregion
+            // uncomment if using single itergation logic
+            //return new int[] {};
         }
 
+        public IList<int> ArraysIntersection(int[] arr1, int[] arr2, int[] arr3) // premium problem
+        { // 1213. https://leetcode.com/problems/intersection-of-three-sorted-arrays/ 
+            // can be done using dictionary, add element and increment value, return if element value =3
+            int p = 0, q = 0, r = 0;
+            List<int> res = new List<int>();
+
+            while (p < arr1.Length && q < arr2.Length && r < arr3.Length)
+            {
+                if (arr1[p] == arr2[q] && arr2[q] == arr3[r])
+                {
+                    res.Add(arr1[p]);
+                    p++;
+                    q++;
+                    r++;
+                }
+                else
+                {
+                    if (arr1[p] < arr2[q])
+                    {
+                        p++;
+                    }
+                    else if (arr2[q] < arr3[r])
+                    {
+                        q++;
+                    }
+                    else
+                    {
+                        r++;
+                    }
+                }
+            }
+            return res;
+        }
+
+        public int[] NextGreaterElement(int[] nums1, int[] nums2) // you watch video, if unable to understand logic
+        { // 496. https://leetcode.com/problems/next-greater-element-i/
+            Stack<int> st = new Stack<int>();
+            Dictionary<int, int> dict = new Dictionary<int, int>();
+
+            int i = 0;
+            while (i < nums2.Length)
+            {
+                while (st.Count > 0 && nums2[i] > st.Peek())
+                {
+                    dict.Add(st.Pop(), nums2[i]);
+                }
+                st.Push(nums2[i]);
+                i++;
+            }
+
+            while (st.Count != 0)
+            {
+                dict.Add(st.Pop(), -1);
+            }
+
+            int[] res = new int[nums1.Length];
+            i = 0;
+            while (i < nums1.Length)
+            {
+                if (dict.ContainsKey(nums1[i]))
+                {
+                    res[i] = dict[nums1[i]];
+                }
+                i++;
+            }
+            return res;
+        }
+        
+        #endregion
+
+        #region leetcode Medium
         public int[] TwoSumII(int[] nums, int target)
-        { //https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/
+        { // 167. https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/
+          // 2 pointer solution
             int start = 0, end = nums.Length - 1;
 
             while (start < end)
@@ -66,9 +160,9 @@ namespace DataStructuresAndAlgorithms
             }
             return new int[] { -1, -1 };
         }
-
+        
         public IList<IList<int>> ThreeSum(int[] arr)
-        { //https://leetcode.com/problems/3sum/
+        { // 15. https://leetcode.com/problems/3sum/
             //[-4,-1,-1,0,1,2]
             //[[-1,-1,2],[-1,0,1]]
             List<IList<int>> res = new List<IList<int>>();
@@ -106,9 +200,9 @@ namespace DataStructuresAndAlgorithms
             }
             return res;
         }
-
+        
         public int MaxSubArrayLen(int[] nums, int k) // premium problem
-        { // https://leetcode.com/problems/maximum-size-subarray-sum-equals-k/
+        { // 325. https://leetcode.com/problems/maximum-size-subarray-sum-equals-k/
             // use prefix sum, like fibanacci
             int prefix = 0, longest = 0;
             Dictionary<int, int> dict = new Dictionary<int, int>();
@@ -136,73 +230,7 @@ namespace DataStructuresAndAlgorithms
             return longest;
         }
 
-        public IList<int> ArraysIntersection(int[] arr1, int[] arr2, int[] arr3) // premium problem
-        { // https://leetcode.com/problems/intersection-of-three-sorted-arrays/ 
-            // can be done using dictionary, add element and increment value, return if element value =3
-            int p = 0, q = 0, r = 0;
-            List<int> res = new List<int>();
-
-            while (p < arr1.Length && q < arr2.Length && r < arr3.Length)
-            {
-                if (arr1[p] == arr2[q] && arr2[q] == arr3[r])
-                {
-                    res.Add(arr1[p]);
-                    p++;
-                    q++;
-                    r++;
-                }
-                else
-                {
-                    if (arr1[p] < arr2[q])
-                    {
-                        p++;
-                    }
-                    else if (arr2[q] < arr3[r])
-                    {
-                        q++;
-                    }
-                    else
-                    {
-                        r++;
-                    }
-                }
-            }
-            return res;
-        }
-
-        public int[] NextGreaterElement(int[] nums1, int[] nums2) // you watch video, if unable to understand logic
-        { // https://leetcode.com/problems/next-greater-element-i/
-            Stack<int> st = new Stack<int>();
-            Dictionary<int, int> dict = new Dictionary<int, int>();
-
-            int i = 0;
-            while (i < nums2.Length)
-            {
-                while (st.Count > 0 && nums2[i] > st.Peek())
-                {
-                    dict.Add(st.Pop(), nums2[i]);
-                }
-                st.Push(nums2[i]);
-                i++;
-            }
-
-            while (st.Count != 0)
-            {
-                dict.Add(st.Pop(), -1);
-            }
-
-            int[] res = new int[nums1.Length];
-            i = 0;
-            while (i < nums1.Length)
-            {
-                if (dict.ContainsKey(nums1[i]))
-                {
-                    res[i] = dict[nums1[i]];
-                }
-                i++;
-            }
-            return res;
-        }
+        #endregion
 
         public int ReverseNumber(int x)
         {
@@ -904,24 +932,24 @@ namespace DataStructuresAndAlgorithms
             int i = 0;
             int totalLen = 0;
             StringBuilder sb = new StringBuilder();
-            foreach(string x in sarr)
+            foreach (string x in sarr)
             {
-                if(x.Length+totalLen <= maxlen)
+                if (x.Length + totalLen <= maxlen)
                 {
                     sb.Append(s[i]);
                     sb.Append(" ");
                     totalLen = sb.ToString().Length + x.Length;
                 }
-                else if(x.Length + totalLen > maxlen)
+                else if (x.Length + totalLen > maxlen)
                 {
                     res.Add(sb.ToString());
                     totalLen = 0;
                 }
-            }            
+            }
             return res;
         }
 
-        public string CustomSortString(string order, string s) 
+        public string CustomSortString(string order, string s)
         { // https://leetcode.com/problems/custom-sort-string/
             int[] alpha = new int[26];
             int i = 0;
