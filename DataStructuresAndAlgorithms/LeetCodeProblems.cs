@@ -9,7 +9,7 @@ namespace DataStructuresAndAlgorithms
 {
     public class LeetCodeProblems
     {
-        #region leetcode Easy
+    #region leetcode Easy
         public int[] TwoSum(int[] nums, int target)
         { // 1. https://leetcode.com/problems/two-sum/description/
             #region  Brute force method
@@ -134,123 +134,8 @@ namespace DataStructuresAndAlgorithms
             return res;
         }
         
-        #endregion
-
-        #region leetcode Medium
-        public int[] TwoSumII(int[] nums, int target)
-        { // 167. https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/
-          // 2 pointer solution
-            int start = 0, end = nums.Length - 1;
-
-            while (start < end)
-            {
-                int tot = nums[start] + nums[end];
-                if (tot == target)
-                {
-                    return new int[] { start + 1, end + 1 };
-                }
-                else if (tot < target)
-                {
-                    start++;
-                }
-                else
-                {
-                    end--;
-                }
-            }
-            return new int[] { -1, -1 };
-        }
-        
-        public IList<IList<int>> ThreeSum(int[] arr)
-        { // 15. https://leetcode.com/problems/3sum/
-            //[-4,-1,-1,0,1,2]
-            //[[-1,-1,2],[-1,0,1]]
-            List<IList<int>> res = new List<IList<int>>();
-            Array.Sort(arr);
-            int i = 0;
-            while (i < arr.Length && arr[i] <= 0)
-            {
-                if (i == 0 || arr[i - 1] != arr[i])
-                {
-                    int l = i + 1, r = arr.Length - 1;
-                    int sum = arr[i] + arr[l] + arr[r];
-                    while (l < r)
-                    {
-                        if (sum < 0)
-                        {
-                            l++;
-                        }
-                        else if (sum > 0)
-                        {
-                            r--;
-                        }
-                        else
-                        {
-                            res.Add(new List<int> { arr[i], arr[l], arr[r] });
-                            l++;
-                            r--;
-                            while (l < r && arr[l] == arr[l - 1])
-                            {
-                                l++;
-                            }
-                        }
-                    }
-                }
-                i++;
-            }
-            return res;
-        }
-        
-        public int MaxSubArrayLen(int[] nums, int k) // premium problem
-        { // 325. https://leetcode.com/problems/maximum-size-subarray-sum-equals-k/
-            // use prefix sum, like fibanacci
-            int prefix = 0, longest = 0;
-            Dictionary<int, int> dict = new Dictionary<int, int>();
-            int i = 0;
-            while (i < nums.Length)
-            {
-                prefix += nums[i];
-
-                if (prefix == k)
-                {
-                    longest = i + 1;
-                }
-
-                if (dict.ContainsKey(prefix - k))
-                {
-                    longest = Math.Max(longest, i - dict[prefix - k]);
-                }
-
-                if (!dict.ContainsKey(prefix))
-                {
-                    dict.Add(prefix, i);
-                }
-                i++;
-            }
-            return longest;
-        }
-
-        #endregion
-
-        public int ReverseNumber(int x)
-        {
-            if (x < 0) return 0;
-            int reverse = 0;
-            while (x != 0)
-            {
-                int reminder = x % 10;
-                x = x / 10;
-                if (reverse > int.MaxValue / 10) return 0;
-                //|| (reverse == int.MaxValue / 10 && reminder > 7)
-                if (reverse < int.MinValue / 10) return 0;
-                //|| (reverse == int.MinValue / 10 && reminder < -8)
-                reverse = reverse * 10 + reminder;
-            }
-            return reverse;
-        }
-
         public bool IsPowerOfFour(int n)
-        { //https://leetcode.com/problems/power-of-four/
+        { //342. https://leetcode.com/problems/power-of-four/
             if (n == 0) return false;
             while (n != 1)
             {
@@ -263,8 +148,26 @@ namespace DataStructuresAndAlgorithms
             return true;
         }
 
+        public int ReverseNumber(int x)
+        { // 7.https://leetcode.com/problems/reverse-integer/description/
+            if (x < 0) return 0;
+            int reverse = 0;
+            while (x != 0)
+            {
+                int remainder = x % 10;
+                x = x / 10;
+                // int range, -2,147,483,648 to 2,147,483,647
+                if (reverse > int.MaxValue / 10) return 0;
+                //|| (reverse == int.MaxValue / 10 && reminder > 7)
+                if (reverse < int.MinValue / 10) return 0;
+                //|| (reverse == int.MinValue / 10 && reminder < -8)
+                reverse = reverse * 10 + remainder;
+            }
+            return reverse;
+        }
+
         public int[] Intersection(int[] nums1, int[] nums2)
-        { //https://leetcode.com/problems/intersection-of-two-arrays/
+        { //349. https://leetcode.com/problems/intersection-of-two-arrays/
             HashSet<int> set1 = new HashSet<int>();
             foreach (int x in nums1)
             {
@@ -298,7 +201,8 @@ namespace DataStructuresAndAlgorithms
         }
 
         public int Fibonacci(int n)
-        {
+        { // 509. https://leetcode.com/problems/fibonacci-number/description/
+          // fibonacci is sum of previous 2 values, arr[2] = arr[1] + arr[0]
             if (n <= 1) return n;
             int first = 0, second = 1, result = 0;
             for (int i = 2; i <= n; i++)
@@ -311,7 +215,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public int[] PlusOne(int[] digits)
-        { //https://leetcode.com/problems/plus-one/
+        { // 66. https://leetcode.com/problems/plus-one/
             int i = digits.Length - 1;
             while (i >= 0)
             {
@@ -342,19 +246,187 @@ namespace DataStructuresAndAlgorithms
         }
 
         public bool IsPalindrome(int x)
-        {
+        { // 9. https://leetcode.com/problems/palindrome-number/description/
+            // reverse the number and compare with input
             if (x < 0 || (x != 0 && x % 10 == 0)) return false;
             int reverse = 0;
-            while (x > reverse)
+            int temp = x;
+            while (temp!=0)
             {
-                int reminder = x % 10;
-                x = x / 10;
+                int remainder = temp % 10;
+                temp = temp / 10;
                 if (reverse > int.MaxValue / 10) return false;
                 if (reverse < int.MinValue / 10) return false;
-                reverse = reverse * 10 + reminder;
+                reverse = reverse * 10 + remainder;
             }
             return (x == reverse || x == reverse / 10) ? true : false;
         }
+
+        public string ReverseVowels(string s)
+        { //345. https://leetcode.com/problems/reverse-vowels-of-a-string/
+            // take 2 pointers at start and end, check for VOWEL (a,e,i,o,u) if they are, swap them otherwise increment or decrement
+            int left = 0, right = s.Length - 1;
+            char[] carr = s.ToCharArray();
+            while (left < right)
+            {
+                if (!IsVowel(s[left]))
+                {
+                    left++;
+                    continue;
+                }
+                if (!IsVowel(s[right]))
+                {
+                    right--;
+                    continue;
+                }
+                char temp = carr[left];
+                carr[left] = carr[right];
+                carr[right] = temp;
+                left++;
+                right--;
+            }
+            return new String(carr);
+        }
+
+        public bool IsVowel(char x)
+        {
+            if (x == 'a' || x == 'e' || x == 'i' || x == 'o' || x == 'u' || x == 'A' || x == 'E' || x == 'I' || x == 'O' || x == 'U')
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool IsValidParentheses(string s)
+        { // 20. https://leetcode.com/problems/valid-parentheses/description/
+            Stack<char> stack = new Stack<char>();
+            for (int i = 0; i < s.Length; i++)
+            {
+                switch (s[i])
+                {
+                    case '(':
+                        stack.Push(s[i]);
+                        break;
+                    case '[':
+                        stack.Push(s[i]);
+                        break;
+                    case '{':
+                        stack.Push(s[i]);
+                        break;
+                    case ')':
+                        if (stack.Count == 0 || stack.Pop() != '(') return false;
+                        break;
+                    case ']':
+                        if (stack.Count == 0 || stack.Pop() != '[') return false;
+                        break;
+                    case '}':
+                        if (stack.Count == 0 || stack.Pop() != '{') return false;
+                        break;
+                }
+            }
+            return stack.Any() ? false : true;
+        }
+
+    #endregion
+
+    #region leetcode Medium
+        public int[] TwoSumII(int[] nums, int target)
+        { // 167. https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/
+          // 2 pointer solution
+            int start = 0, end = nums.Length - 1;
+
+            while (start < end)
+            {
+                int tot = nums[start] + nums[end];
+                if (tot == target)
+                {
+                    return new int[] { start + 1, end + 1 };
+                }
+                else if (tot < target)
+                {
+                    start++;
+                }
+                else
+                {
+                    end--;
+                }
+            }
+            return new int[] { -1, -1 };
+        }
+        
+        public IList<IList<int>> ThreeSum(int[] arr)
+        { // 15. https://leetcode.com/problems/3sum/
+            //[-4,-1,-1,0,1,2]
+            //[[-1,-1,2],[-1,0,1]]
+            List<IList<int>> res = new List<IList<int>>();
+            Array.Sort(arr);
+            for(int i=0;i< arr.Length;i++){
+                if (i > 0 && arr[i] == arr[i-1]) {
+                    continue;
+                }
+                int l=i+1, r=arr.Length-1;
+                while(l < r){
+                    int sum = arr[i]+arr[l]+arr[r];
+                    if(sum>0){
+                        r--;
+                    }
+                    else if(sum <0){
+                        l++;
+                    }
+                    else{
+                        res.Add(new List<int>{arr[i], arr[l], arr[r]});
+                        l++;
+                        while(arr[l]==arr[l-1] && l < r){
+                            l++;
+                        }
+                    }
+                }
+                
+
+            }
+            
+            return res;
+        }
+        
+        public int MaxSubArrayLen(int[] nums, int k) // premium problem
+        { // 325. https://leetcode.com/problems/maximum-size-subarray-sum-equals-k/
+            // use prefix sum, like fibanacci
+            int prefix = 0, longest = 0;
+            Dictionary<int, int> dict = new Dictionary<int, int>();
+            int i = 0;
+            while (i < nums.Length)
+            {
+                prefix += nums[i];
+
+                if (prefix == k)
+                {
+                    longest = i + 1;
+                }
+
+                if (dict.ContainsKey(prefix - k))
+                {
+                    longest = Math.Max(longest, i - dict[prefix - k]);
+                }
+
+                if (!dict.ContainsKey(prefix))
+                {
+                    dict.Add(prefix, i);
+                }
+                i++;
+            }
+            return longest;
+        }
+
+        
+    #endregion      
+        
+        
+
+        
+
 
         public int RomanToInt(string s)
         {
@@ -441,42 +513,9 @@ namespace DataStructuresAndAlgorithms
             }
         }
 
-        public string ReverseVowels(string s)
-        { //https://leetcode.com/problems/reverse-vowels-of-a-string/
-            int left = 0, right = s.Length - 1;
-            char[] carr = s.ToCharArray();
-            while (left < right)
-            {
-                if (!IsVowel(s[left]))
-                {
-                    left++;
-                    continue;
-                }
-                if (!IsVowel(s[right]))
-                {
-                    right--;
-                    continue;
-                }
-                char temp = carr[left];
-                carr[left] = carr[right];
-                carr[right] = temp;
-                left++;
-                right--;
-            }
-            return new String(carr);
-        }
+        
 
-        public bool IsVowel(char x)
-        {
-            if (x == 'a' || x == 'e' || x == 'i' || x == 'o' || x == 'u' || x == 'A' || x == 'E' || x == 'I' || x == 'O' || x == 'U')
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
+        
 
         public bool BuddyStrings(string s, string t)
         { // https://leetcode.com/problems/buddy-strings/
@@ -647,35 +686,7 @@ namespace DataStructuresAndAlgorithms
             return res;
         }
 
-        public bool IsValidParentheses(string s)
-        {
-            Stack<char> stack = new Stack<char>();
-            for (int i = 0; i < s.Length; i++)
-            {
-                switch (s[i])
-                {
-                    case '(':
-                        stack.Push(s[i]);
-                        break;
-                    case '[':
-                        stack.Push(s[i]);
-                        break;
-                    case '{':
-                        stack.Push(s[i]);
-                        break;
-                    case ')':
-                        if (stack.Count == 0 || stack.Pop() != '(') return false;
-                        break;
-                    case ']':
-                        if (stack.Count == 0 || stack.Pop() != '[') return false;
-                        break;
-                    case '}':
-                        if (stack.Count == 0 || stack.Pop() != '{') return false;
-                        break;
-                }
-            }
-            return stack.Any() ? false : true;
-        }
+        
 
         public string Multiply(string num1, string num2)
         {
@@ -1433,7 +1444,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public bool HasCycle(ListNodeForCycle head)
-        {
+        { // 141. easy https://leetcode.com/problems/linked-list-cycle/description/
             if (head == null) return false;
             ListNodeForCycle move2steps = head;
             ListNodeForCycle move1step = head;
@@ -2538,8 +2549,11 @@ namespace DataStructuresAndAlgorithms
         }
 
         public int MaxAreaContainerWithMostWater(int[] A)
-        { //https://leetcode.com/problems/container-with-most-water/
-            //https://www.youtube.com/watch?v=4GIIy1o-3DM&ab_channel=jayatitiwari
+        { //11. medium https://leetcode.com/problems/container-with-most-water/
+            // https://www.youtube.com/watch?v=UuiTKBwPgAo
+            // area of a rectangle is length x width, so 
+            // to calculate width we do r-l
+            // to calculate height we do min of arr[l], arr[r]
             int i = 0, j = A.Length - 1, area = 0;
             while (i < j)
             {
@@ -2551,7 +2565,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public IList<string> LetterCombinations(string digits)
-        { //https://leetcode.com/problems/letter-combinations-of-a-phone-number/
+        { //17 medium https://leetcode.com/problems/letter-combinations-of-a-phone-number/
             List<string> temp = new List<string>(); // ex: digits= "234"
             if (digits.Length == 0) return temp;
             Dictionary<int, List<string>> dict = new Dictionary<int, List<string>>
@@ -2619,7 +2633,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public List<string> printParenthesis(char[] str, int n)
-        { //https://leetcode.com/problems/generate-parentheses/
+        { // not this leetcode problem https://leetcode.com/problems/generate-parentheses/
             List<string> result = new List<string>();
             if (n > 0)
                 _printParenthesis(str, 0, n, 0, 0, result);
@@ -2685,7 +2699,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public int Search(int[] nums, int target)
-        { //https://leetcode.com/problems/search-in-rotated-sorted-array/
+        { //33. medium https://leetcode.com/problems/search-in-rotated-sorted-array/
             if ((nums.Length == 1) && (nums[0] == target)) return 0;
             int rotatedAt = FindRotatedAt(nums, 0, nums.Length - 1);
             if (rotatedAt == -1) return BinarySearchIn(nums, 0, nums.Length - 1, target);
@@ -2888,7 +2902,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public bool FindIfAappearsBeforeB(string S)
-        {
+        { // 2124. https://leetcode.com/problems/check-if-all-as-appears-before-all-bs/description/
             // aabbb:t, ba:f, aaa:t, b:t, abba:f
             if (S.Length == 1 && S[0] == 'b') return false;
             bool flag = false;
@@ -2900,8 +2914,21 @@ namespace DataStructuresAndAlgorithms
             return flag;
         }
 
+        public bool CheckString(string s) {
+            // 2124. https://leetcode.com/problems/check-if-all-as-appears-before-all-bs/description/
+            bool aAfterb = false;
+            for(int i=0;i<s.Length-1;i++){
+                if(s[i] == 'b' && s[i+1]=='a'){
+                    aAfterb = true;
+                    break;
+                }            
+            }
+
+            return !aAfterb;
+        }
+
         public int EvaluateReversePolishNotationOrPostFixNotation(string[] s)
-        { //https://leetcode.com/problems/evaluate-reverse-polish-notation/
+        { //150. medium https://leetcode.com/problems/evaluate-reverse-polish-notation/
             Stack<int> st = new Stack<int>();
             int temp;
             int op1;
@@ -2955,7 +2982,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public int[][] Merge(int[][] intervals)
-        { //https://leetcode.com/problems/merge-intervals/
+        { //56. medium https://leetcode.com/problems/merge-intervals/
             Array.Sort(intervals, (a, b) => a[0].CompareTo(b[0]));
 
             List<int[]> res = new List<int[]>();
@@ -2977,7 +3004,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public string ReverseWords2(string s)
-        { //https://leetcode.com/problems/reverse-words-in-a-string/
+        { //151. medium https://leetcode.com/problems/reverse-words-in-a-string/
             StringBuilder sb = new StringBuilder();
             int j, i = 0;
             while (i < s.Length)
@@ -3002,7 +3029,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public string FractionToDecimal(int numerator, int denominator)
-        { //https://leetcode.com/problems/fraction-to-recurring-decimal/
+        { //166. medium https://leetcode.com/problems/fraction-to-recurring-decimal/
             StringBuilder sb = new StringBuilder();
             long nume;
             long den;
@@ -3047,7 +3074,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public string FormLargestNumber(int[] nums)
-        { //https://leetcode.com/problems/largest-number/
+        { //179. medium https://leetcode.com/problems/largest-number/
             if (nums.Length == 0) return "0";
             string[] sarr = new string[nums.Length];
             sarr = nums.Select(x => x.ToString()).ToArray();
@@ -3070,7 +3097,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public int NumIslands(char[][] grid)
-        { //https://leetcode.com/problems/number-of-islands/
+        { //200. medium https://leetcode.com/problems/number-of-islands/
             int rows = grid.Length;
             int cols = grid[0].Length;
 
@@ -3104,7 +3131,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public int[][] FloodFill(int[][] image, int sr, int sc, int newColor)
-        { //https://leetcode.com/problems/flood-fill/
+        { //733. easy https://leetcode.com/problems/flood-fill/
             int rowlen = image.Length;
             int collen = image[0].Length;
             int oldColor = image[sr][sc];
@@ -3126,7 +3153,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public int ClimbStairs(int n)
-        { //https://leetcode.com/problems/climbing-stairs/
+        { // 70. easy https://leetcode.com/problems/climbing-stairs/
             if (n == 0 || n == 1) return 1;
             int[] dp = new int[n + 1];
             dp[0] = 1;
@@ -3141,7 +3168,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public int NumJewelsInStones(string jewels, string stones)
-        { //https://leetcode.com/problems/jewels-and-stones/
+        { //771. easy https://leetcode.com/problems/jewels-and-stones/
             if (jewels == "" || stones == "") return 0;
             int count = 0;
             byte[] jewelAscii = Encoding.ASCII.GetBytes(jewels);
@@ -3154,7 +3181,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public string DefangIPaddr(string address)
-        { //https://leetcode.com/problems/defanging-an-ip-address/
+        { //1108. easy https://leetcode.com/problems/defanging-an-ip-address/
             StringBuilder sb = new StringBuilder();
             int i = 0;
             while (i < address.Length)
@@ -3167,7 +3194,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public string RestoreString(string s, int[] indices)
-        { //https://leetcode.com/problems/shuffle-string/
+        { //1528. easy https://leetcode.com/problems/shuffle-string/
             char[] r = new char[s.Length];
             int i = 0;
             foreach (int x in indices)
@@ -3179,7 +3206,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public string Interpret(string command)
-        { //https://leetcode.com/problems/goal-parser-interpretation/
+        { //1678. easy https://leetcode.com/problems/goal-parser-interpretation/
             StringBuilder sb = new StringBuilder();
             int i = 0;
             while (i < command.Length)
@@ -3240,7 +3267,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public bool BackspaceCompare(string s, string t)
-        { //https://leetcode.com/problems/backspace-string-compare/
+        { // 844. easy https://leetcode.com/problems/backspace-string-compare/
             string a = BackspaceCompareHelper(s);
             string b = BackspaceCompareHelper(t);
             return a == b;
@@ -3258,7 +3285,7 @@ namespace DataStructuresAndAlgorithms
                 }
                 else if (st.Count > 0)
                 {
-                    st.Pop();
+                    st.Pop(); // the logic doesn't want to store the elements at all
                 }
                 i++;
             }
@@ -3266,7 +3293,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public string SortSentence(string s)
-        { //https://leetcode.com/problems/sorting-the-sentence/
+        { // 1859. easy https://leetcode.com/problems/sorting-the-sentence/
             Dictionary<int, string> dic = new Dictionary<int, string>();
             StringBuilder sb = new StringBuilder();
             string[] tokens = s.Split(' ');
@@ -3292,7 +3319,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public int NumDifferentIntegers(string word)
-        { //https://leetcode.com/problems/number-of-different-integers-in-a-string/
+        { //1805. easy https://leetcode.com/problems/number-of-different-integers-in-a-string/
             HashSet<string> set = new HashSet<string>();
             string[] tokens = Regex.Replace(word, @"[a-z]+", " ").Split(' ');
             for (int i = 0; i < tokens.Length; i++)
@@ -3305,7 +3332,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public string DecodeString(string s)
-        { //https://leetcode.com/problems/decode-string/
+        { //394. medium https://leetcode.com/problems/decode-string/
             //s = "3[a]2[bc]"
             Stack<int> intSt = new Stack<int>();
             Stack<char> charSt = new Stack<char>();
@@ -3382,7 +3409,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public int LengthOfLastWord(string s)
-        { //https://leetcode.com/problems/length-of-last-word/
+        { //58. easy https://leetcode.com/problems/length-of-last-word/
             if (string.IsNullOrEmpty(s)) return 0;
             string[] tokens = s.Trim().Split(' ');
             int n = tokens.Length;
@@ -3390,7 +3417,8 @@ namespace DataStructuresAndAlgorithms
         }
 
         public IList<int> PartitionLabels(string s) //ababcbacadefegdehijhklij
-        { //https://leetcode.com/problems/partition-labels/
+        { // 763. medium https://leetcode.com/problems/partition-labels/
+        // review later
             Dictionary<char, int> dic = new Dictionary<char, int>();
             int i = 0;
             while (i < s.Length)
@@ -3417,8 +3445,9 @@ namespace DataStructuresAndAlgorithms
             return result;
         }
 
-        public string MinWindow(string s, string t) // this is wrong answer
-        { //https://leetcode.com/problems/minimum-window-substring/
+        public string MinWindow(string s, string t) 
+        { // this is wrong answer
+            //76. hard https://leetcode.com/problems/minimum-window-substring/
             StringBuilder sb = new StringBuilder();
             if (s.Length < t.Length) return sb.ToString();
             Dictionary<char, int> dic = StringToDictionary(t);
@@ -3552,7 +3581,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public bool IsValidAnagram(string a, string b)
-        {
+        { // 242. easy https://leetcode.com/problems/valid-anagram/description/
             if (a.Length != b.Length) return false;
             Dictionary<char, int> dict = new Dictionary<char, int>();
             int i = 0, j = 0;
@@ -3591,7 +3620,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public IList<IList<string>> GroupAnagrams2(string[] arr)
-        { //https://leetcode.com/problems/group-anagrams/
+        { //49. medium https://leetcode.com/problems/group-anagrams/
             List<IList<string>> output = new List<IList<string>>();
             Dictionary<string, List<string>> dict = new Dictionary<string, List<string>>();
             int i = 0;
@@ -3615,7 +3644,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public bool IsPalindromeStringWithOnlyAlphaNumericCharacters(string s)
-        { //https://leetcode.com/problems/valid-palindrome/
+        { //125. easy https://leetcode.com/problems/valid-palindrome/
             //string a = Regex.Replace(s,@"[A-Za-z0-9]+","").ToLower();
             int head = 0, tail = s.Length - 1;
             while (head <= tail)
@@ -3641,8 +3670,34 @@ namespace DataStructuresAndAlgorithms
             return true;
         }
 
+        public bool IsPalindromeHelper(int i, string s)
+        { //125. easy https://leetcode.com/problems/valid-palindrome/
+            int head =i, tail =s.Length-1;
+            while(head < tail){
+                if(i > s.Length/2){
+                    return true;
+                }
+                if (!char.IsLetterOrDigit(s[head]))
+                {
+                    head++;
+                    continue;
+                }
+                if (!char.IsLetterOrDigit(s[tail]))
+                {
+                    tail--;
+                    continue;
+                }
+                if (char.ToLower(s[head])!= char.ToLower(s[tail])){
+                    return false;
+                }
+                head++;
+                tail--;          
+            }
+            return true;
+        }
+
         public int NumUniqueEmails(string[] e)
-        { //https://leetcode.com/problems/unique-email-addresses/
+        { // 929. easy https://leetcode.com/problems/unique-email-addresses/
             int i = 0;
             //int res=0;
             HashSet<string> res = new HashSet<string>();
@@ -3662,7 +3717,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public string LicenseKeyFormatting(string s, int k)
-        { //https://leetcode.com/problems/license-key-formatting/
+        { // 482. easy https://leetcode.com/problems/license-key-formatting/
             s = s.Replace("-", "").ToUpper();
             StringBuilder sb = new StringBuilder();
             int i = s.Length;
@@ -3678,7 +3733,7 @@ namespace DataStructuresAndAlgorithms
         }
 
         public IList<int> RightSideView(TreeNode root)
-        { //https://leetcode.com/problems/binary-tree-right-side-view/
+        { //199. medium https://leetcode.com/problems/binary-tree-right-side-view/
             Queue<TreeNode> q = new Queue<TreeNode>();
             if (root != null)
             {
@@ -3855,7 +3910,7 @@ namespace DataStructuresAndAlgorithms
 
     #region Diameter of Tree
     public class DiameterSolution
-    {
+    { // 543. https://leetcode.com/problems/diameter-of-binary-tree/description/
         int dia = 0;
         public int DiameterOfBinaryTree(TreeNode root)
         {
@@ -3918,7 +3973,7 @@ namespace DataStructuresAndAlgorithms
 
     #region Max path sum
     public class MaxPathSumClass
-    { //https://leetcode.com/problems/binary-tree-maximum-path-sum/
+    { // 124. https://leetcode.com/problems/binary-tree-maximum-path-sum/
         int result = int.MinValue;
         public int MaxPathSum(TreeNode root)
         {
@@ -3940,7 +3995,7 @@ namespace DataStructuresAndAlgorithms
     }
     #endregion
 
-    #region ListNode
+#region ListNode
     public class ListNode
     {
         public int val;
@@ -3951,7 +4006,7 @@ namespace DataStructuresAndAlgorithms
             this.next = next;
         }
     }
-    #endregion
+#endregion
 
     #region MinStack LeetCode
     public class MinStack
@@ -4340,8 +4395,58 @@ namespace DataStructuresAndAlgorithms
                 }
                 sortAlgorithms.MinHeapSort(minHeap);
                 sortAlgorithms.BuildMinHeap(minHeap, minHeap.Length);
-            }
+            }            
         }
+
+        // public int FindKthLargest(int[] nums, int k) 
+        //     {
+        
+        //         PriorityQueue<int, int> minheap = new PriorityQueue<int, int>();
+        //         int i=0;
+        //         foreach( var x in nums){
+        //             minheap.Enqueue(x,x);
+
+        //             if(minheap.Count >k){
+        //                 minheap.Dequeue();
+        //             }
+        //         }
+
+        //         return minheap.Peek();        
+        //     }
+
+        // public static int FindKthSmallest(int[] arr, int k)
+        // {
+
+        //     if (k <= 0 || k > arr.Length)
+        //     {
+        //         throw new ArgumentException("k is out of range.");
+        //     }
+
+        //     // Initialize a PriorityQueue as a max-heap of size k.
+        //     // We use a custom comparer ((x, y) => y.CompareTo(x)) to order elements in descending order, 
+        //     // effectively making it a max-heap (largest element has highest priority and is at the top).
+        //     var maxHeap = new PriorityQueue<int, int>(Comparer<int>.Create((x, y) => y.CompareTo(x)));
+
+        //     // 1. Insert the first k elements into the max-heap
+        //     for (int i = 0; i < k; i++)
+        //     {
+        //         maxHeap.Enqueue(arr[i], arr[i]);
+        //     }
+
+        //     // 2. Process the remaining elements
+        //     for (int i = k; i < arr.Length; i++)
+        //     {
+        //         // Check if the current element is smaller than the heap's maximum (root)
+        //         if (arr[i] < maxHeap.Peek())
+        //         {
+        //             // Remove the largest element and add the current smaller one
+        //             maxHeap.Dequeue();
+        //             maxHeap.Enqueue(arr[i], arr[i]);
+        //         }
+        //     }
+        //     // 3. The root of the max-heap is the kth smallest element
+        //     return maxHeap.Peek();
+        // }
 
         public int Add(int val)
         {
@@ -4489,9 +4594,8 @@ namespace DataStructuresAndAlgorithms
             if (inostart == inoend) return tree;
 
             int indexCurRoot = dic[curRoot];
-            tree.left = BinaryTreeFromInorderAndPreorderUtil(inorder, preorder, inostart, indexCurRoot - 1);
             tree.right = BinaryTreeFromInorderAndPreorderUtil(inorder, preorder, indexCurRoot + 1, inoend);
-
+            tree.left = BinaryTreeFromInorderAndPreorderUtil(inorder, preorder, inostart, indexCurRoot - 1);
 
             return tree;
         }
